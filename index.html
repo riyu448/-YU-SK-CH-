@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 
-  <!-- ✅ منع الزوم + تكيّف مع كل الشاشات -->
+  <!-- ✅ منع الزوم + تكيّف كامل -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 
   <title>RIYU SITE</title>
@@ -82,10 +82,8 @@
       width: 28px;
       height: 28px;
       filter: invert(1);
-      transition: 0.2s;
     }
 
-    /* ✅ دائرة التحميل */
     .loading {
       position: absolute;
       top: 140px;
@@ -100,40 +98,18 @@
       z-index: 999;
     }
 
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    .login-btn:hover {
-      transform: scale(1.14);
-      box-shadow: 0 0 15px rgba(255,255,255,0.35);
-    }
-
-    .box {
-      text-align: center;
-      color: white;
-      margin-top: 30px;
-      animation: fadeUp 0.9s ease;
-    }
+    .box { text-align: center; color: white; margin-top: 30px; animation: fadeUp 0.9s ease; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(15px); }
-      to   { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .title {
-      font-size: 42px;
-      margin-bottom: 15px;
-      font-weight: bold;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
+    .title { font-size: 42px; margin-bottom: 15px; font-weight: bold; }
 
-    .subtitle {
-      font-size: 18px;
-      margin-bottom: 35px;
-      opacity: 0.75;
-      font-weight: bold;
-    }
+    .subtitle { font-size: 18px; margin-bottom: 35px; opacity: 0.75; font-weight: bold; }
 
     .login-buttons {
       display: flex;
@@ -142,17 +118,29 @@
       margin-top: 20px;
     }
 
+    /* ✅ شكل الأزرار */
     .login-btn {
       width: 70px;
       height: 70px;
       border-radius: 50%;
-      background: #101010;
+      background: #0f0f0f;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      transition: 0.25s ease;
-      border: 1px solid #333;
+      transition: 0.25s;
+      border: 1px solid #444;
+      box-shadow: 0 0 12px rgba(255,255,255,0.20);
+    }
+
+    .login-btn:hover {
+      transform: scale(1.12);
+      box-shadow: 0 0 20px rgba(255,255,255,0.45);
+    }
+
+    .login-btn svg {
+      width: 34px;
+      height: 34px;
     }
 
   </style>
@@ -169,7 +157,6 @@
     <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ دائرة التحميل -->
   <div class="loading" id="loading"></div>
 
   <div class="box">
@@ -178,8 +165,22 @@
 
     <div class="login-buttons">
 
-      <div class="login-btn" id="google-btn">GOOGLE</div>
-      <div class="login-btn" id="facebook-btn">FACEBOOK</div>
+      <!-- ✅ Google Button -->
+      <div class="login-btn" id="google-btn">
+        <svg viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.5 8 2.8l5.9-5.9C34.3 3.5 29.6 1.5 24 1.5 14.8 1.5 6.8 6.7 3.1 14.5l6.9 5.3C11.8 14 17.3 9.5 24 9.5z"/>
+          <path fill="#34A853" d="M46.5 24.5c0-1.7-.2-3.3-.5-5H24v9.5h12.6c-.5 2.6-2.1 4.8-4.6 6.3l7.1 5.5c4.2-3.9 6.4-9.7 6.4-16.3z"/>
+          <path fill="#4A90E2" d="M10 28.7c-1-3-1-6.2 0-9.2L3.1 14.5C1.1 18.2 0 22 0 26c0 4.1 1.1 7.9 3.1 11.5l6.9-5.3z"/>
+          <path fill="#FBBC05" d="M24 46.5c6.4 0 11.7-2.1 15.6-5.7l-7.1-5.5c-2 1.4-4.7 2.2-8.5 2.2-6.7 0-12.2-4.5-14-10.7l-6.9 5.3C6.8 41.3 14.8 46.5 24 46.5z"/>
+        </svg>
+      </div>
+
+      <!-- ✅ Facebook Button -->
+      <div class="login-btn" id="facebook-btn">
+        <svg viewBox="0 0 24 24" fill="#1877f2">
+          <path d="M22 12a10 10 0 1 0-11.5 9.9v-7H7.3v-3h3.2V9.4c0-3.2 1.9-5 4.8-5 1.4 0 2.8.2 2.8.2v3h-1.6c-1.6 0-2.1 1-2.1 2v2.4h3.6l-.6 3h-3v7A10 10 0 0 0 22 12"/>
+        </svg>
+      </div>
 
     </div>
   </div>
@@ -189,7 +190,6 @@
   </audio>
 
 <script>
-/* ✅ تأثير الدخول */
 window.onload = () => {
   document.body.classList.add("fade-in");
 
@@ -200,7 +200,6 @@ window.onload = () => {
   }
 };
 
-/* ✅ تنقل الصفحات */
 function goTo(page) {
   document.body.classList.add("fade-out");
   setTimeout(() => window.location.href = page, 700);
@@ -209,7 +208,6 @@ function goTo(page) {
 document.getElementById("google-btn").onclick = () => goTo("google.html");
 document.getElementById("facebook-btn").onclick = () => goTo("facebook.html");
 
-/* ✅ نظام الصوت */
 const music = document.getElementById("musicPlayer");
 const soundBtn = document.getElementById("soundBtn");
 const soundIcon = document.getElementById("soundIcon");
@@ -225,22 +223,16 @@ menuBtn.onclick = (e) => {
   soundBtn.style.display = soundVisible ? "flex" : "none";
 };
 
-/* ✅ زر الصوت */
 soundBtn.onclick = (e) => {
   e.stopPropagation();
 
-  /* ✅ أول مرة → أظهر تحميل */
-  if (!playing) {
-    loading.style.display = "block";
-  }
+  if (!playing) loading.style.display = "block";
 
   playing = !playing;
 
   if (playing) {
     music.volume = 0.7;
-    music.play().then(() => {
-      loading.style.display = "none";
-    });
+    music.play().then(() => loading.style.display = "none");
     soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
     localStorage.setItem("musicPlaying", "true");
   } else {
@@ -250,7 +242,6 @@ soundBtn.onclick = (e) => {
   }
 };
 
-/* ✅ إخفاء الصوت عند الضغط خارج */
 document.body.onclick = () => {
   soundBtn.style.display = "none";
   soundVisible = false;
@@ -258,4 +249,4 @@ document.body.onclick = () => {
 </script>
 
 </body>
-  </html>
+</html>
