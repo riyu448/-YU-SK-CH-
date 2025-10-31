@@ -195,6 +195,24 @@
   </audio>
 
 <script>
+  // ✅ تشغيل الموسيقى تلقائيًا إذا كانت مفعّلة من صفحة سابقة
+window.addEventListener("DOMContentLoaded", () => {
+  const music = document.getElementById("musicPlayer");
+  const soundIcon = document.getElementById("soundIcon");
+
+  if (localStorage.getItem("musicPlaying") === "true") {
+    music.volume = 0.7;
+
+    music.play().then(() => {
+      if (soundIcon) {
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png"; // 🔊
+      }
+    }).catch(() => {
+      // في حال المتصفح حظر التشغيل التلقائي
+      console.log("Autoplay blocked by browser");
+    });
+  }
+});
 
 function logout() {
   window.location.href = "index.html";
