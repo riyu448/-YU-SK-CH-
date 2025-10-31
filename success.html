@@ -54,7 +54,7 @@
       filter: invert(1);
     }
 
-    /* ✅ كتابة النجاح */
+    /* ✅ كتابة النجاح — الآن في سطر واحد */
     .success-text {
       color: #fff;
       font-size: 40px;
@@ -62,6 +62,9 @@
       margin-top: 11vh;
       text-shadow: 0 0 20px red;
       animation: glow 1.3s infinite alternate;
+
+      /* ✅ يمنع السطر من الانقسام */
+      white-space: nowrap;
     }
 
     @keyframes glow {
