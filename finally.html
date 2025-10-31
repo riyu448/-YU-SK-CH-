@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>FINALLY</title>
 
   <style>
@@ -11,7 +11,7 @@
       padding: 0;
       height: 100vh;
 
-      /* ✅ خلفية AMOLED + الصورة كاملة */
+      /* ✅ خلفية AMOLED بعد التعديل */
       background: #000 url("finally.jpg") no-repeat center center;
       background-size: contain;
 
@@ -25,7 +25,6 @@
     body.fade-in { opacity: 1; transform: scale(1); }
     body.fade-out { opacity: 0; transform: scale(0.97); }
 
-    /* ✅ زر الثلاث شطّات */
     .menu-btn {
       position: fixed;
       top: 15px;
@@ -38,7 +37,6 @@
       user-select: none;
     }
 
-    /* ✅ زر مكبر الصوت */
     .sound-btn {
       position: fixed;
       top: 70px;
@@ -63,7 +61,6 @@
       filter: invert(1);
     }
 
-    /* ✅ زر الرجوع */
     .back-btn {
       position: fixed;
       top: 15px;
@@ -89,84 +86,130 @@
       width: 22px;
       filter: invert(1);
     }
+
+    /* ✅ لودر أول تشغيل */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 999999;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #333;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: red;
+      margin-top: 12px;
+      font-size: 16px;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- ✅ زر ☰ -->
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <!-- ✅ زر مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
     <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ زر الرجوع -->
   <div class="back-btn" id="backBtn">
     <img src="https://cdn-icons-png.flaticon.com/512/545/545682.png">
   </div>
 
-  <!-- ✅ ملف الموسيقى -->
+  <!-- ✅ لودر النت الضعيف -->
+  <div id="loaderOverlay" class="loader-overlay">
+    <div class="loader"></div>
+    <div class="loading-text">جاري تشغيل الموسيقى...</div>
+  </div>
+
   <audio id="musicPlayer" loop>
     <source src="chubina.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    window.onload = () => {
-      document.body.classList.add("fade-in");
+<script>
+  window.onload = () => {
+    document.body.classList.add("fade-in");
 
-      const music = document.getElementById("musicPlayer");
+    if (localStorage.getItem("musicPlaying") === "true") {
+      music.volume = 0.7;
+      music.play().catch(()=>{});
+      soundIcon.src =
+        "https://cdn-icons-png.flaticon.com/512/727/727269.png";
+    }
+  };
 
-      if (localStorage.getItem("musicPlaying") === "true") {
-        music.volume = 0.7;
-        music.play().catch(()=>{});
-        document.getElementById("soundIcon").src =
-          "https://cdn-icons-png.flaticon.com/512/727/727269.png";
-      }
-    };
+  const menuBtn = document.getElementById("menuBtn");
+  const soundBtn = document.getElementById("soundBtn");
+  const soundIcon = document.getElementById("soundIcon");
+  const music = document.getElementById("musicPlayer");
+  const loaderOverlay = document.getElementById("loaderOverlay");
 
-    /* ✅ نظام الثلاث شطّات + الصوت */
-    const menuBtn = document.getElementById("menuBtn");
-    const soundBtn = document.getElementById("soundBtn");
-    const soundIcon = document.getElementById("soundIcon");
-    const music = document.getElementById("musicPlayer");
+  let soundVisible = false;
+  let playing = localStorage.getItem("musicPlaying") === "true";
+  let firstPlay = false;
 
-    let soundVisible = false;
-    let playing = localStorage.getItem("musicPlaying") === "true";
+  menuBtn.onclick = (e) => {
+    e.stopPropagation();
+    soundVisible = !soundVisible;
+    soundBtn.style.display = soundVisible ? "flex" : "none";
+  };
 
-    menuBtn.onclick = (e) => {
-      e.stopPropagation();
-      soundVisible = !soundVisible;
-      soundBtn.style.display = soundVisible ? "flex" : "none";
-    };
+  soundBtn.onclick = async (e) => {
+    e.stopPropagation();
+    playing = !playing;
 
-    soundBtn.onclick = (e) => {
-      e.stopPropagation();
-      playing = !playing;
+    if (playing) {
 
-      if (playing) {
-        music.play();
-        localStorage.setItem("musicPlaying", "true");
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png"; // تشغيل
+      /* ✅ أول تشغيل فقط */
+      if (!firstPlay) {
+        loaderOverlay.style.display = "flex";
+        await music.play().catch(()=>{});
+        loaderOverlay.style.display = "none";
+
+        firstPlay = true;
+
+        soundBtn.style.display = "none";
+        soundVisible = false;
       } else {
-        music.pause();
-        localStorage.setItem("musicPlaying", "false");
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png"; // إيقاف
+        music.play();
       }
-    };
 
-    document.body.addEventListener("click", () => {
-      soundBtn.style.display = "none";
-      soundVisible = false;
-    });
+      soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
+      localStorage.setItem("musicPlaying", "true");
 
-    /* ✅ زر الرجوع */
-    document.getElementById("backBtn").onclick = () => {
-      document.body.classList.add("fade-out");
-      setTimeout(() => window.location.href = "success.html", 600);
-    };
-  </script>
+    } else {
+      music.pause();
+      soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
+      localStorage.setItem("musicPlaying", "false");
+    }
+  };
+
+  document.body.addEventListener("click", () => {
+    soundBtn.style.display = "none";
+    soundVisible = false;
+  });
+
+  document.getElementById("backBtn").onclick = () => {
+    document.body.classList.add("fade-out");
+    setTimeout(() => window.location.href = "success.html", 600);
+  };
+</script>
 
 </body>
 </html>
