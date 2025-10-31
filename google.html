@@ -22,6 +22,65 @@
     body.fade-in { opacity: 1; transform: scale(1); }
     body.fade-out { opacity: 0; transform: scale(0.97); }
 
+    /* ✅ زر الثلاث شطّات */
+    .menu-btn {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #000;
+      z-index: 999;
+      user-select: none;
+    }
+
+    /* ✅ زر الصوت */
+    .sound-btn {
+      position: fixed;
+      top: 70px;
+      left: 18px;
+      width: 42px;
+      height: 42px;
+      background: #000;
+      border-radius: 50%;
+      border: 1px solid #444;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 999;
+    }
+    .sound-btn img {
+      width: 22px;
+      height: 22px;
+      filter: invert(1);
+    }
+
+    /* ✅ زر الرجوع */
+    .back-circle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 48px;
+      height: 48px;
+      background-color: #000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      border: 1px solid #222;
+      overflow: hidden;
+    }
+    .back-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .google-container {
       background-color: white;
       padding: 40px 35px;
@@ -36,59 +95,6 @@
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(-20px); }
-    }
-
-    /* ✅ زر الرجوع الجديد مثل فايسبوك */
-    .back-circle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 48px;
-      height: 48px;
-      background-color: #000;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 10px rgba(255,255,255,0.3);
-      border: 1px solid #333;
-      overflow: hidden;
-    }
-
-    .back-circle img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .back-circle:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
-    }
-
-    .google-logo svg {
-      width: 70px;
-      height: 70px;
-    }
-
-    h2 {
-      color: #202124;
-      font-weight: 500;
-      margin-bottom: 5px;
-    }
-
-    p {
-      color: #5f6368;
-      font-size: 14px;
-      margin-bottom: 25px;
     }
 
     input {
@@ -117,9 +123,8 @@
       cursor: pointer;
       margin-top: 10px;
       font-size: 16px;
-      transition: background-color 0.3s, transform 0.1s;
+      transition: background-color 0.3s;
     }
-
     button:hover {
       background-color: #357ae8;
     }
@@ -128,12 +133,11 @@
       position: fixed;
       inset: 0;
       background: rgba(255,255,255,0.9);
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 9999;
       flex-direction: column;
-      display: none;
     }
 
     .loader {
@@ -146,8 +150,7 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
 
     .loading-text {
@@ -155,27 +158,28 @@
       color: #555;
       font-size: 15px;
     }
-
-    .footer-text {
-      margin-top: 25px;
-      font-size: 12px;
-      color: #777;
-    }
   </style>
 </head>
 
-<body class="fade-in">
-  
-  <!-- ✅ زر الرجوع (بدل زر فايسبوك القديم) -->
-  <div class="back-circle" id="backBtn">
-    <img src="image.jpg" alt="Back">
+<body>
+
+  <!-- ✅ زر ☰ -->
+  <div class="menu-btn" id="menuBtn">☰</div>
+
+  <!-- ✅ زر مكبر الصوت -->
+  <div class="sound-btn" id="soundBtn">
+    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Music-Speaker-icon.png">
   </div>
 
-  <!-- واجهة تسجيل الدخول -->
+  <!-- ✅ زر الرجوع -->
+  <div class="back-circle" id="backBtn">
+    <img src="image.jpg">
+  </div>
+
   <div class="google-container" id="googleBox">
+
     <div class="google-logo">
-      <!-- SVG Google -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="70px">
         <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.5 8 2.8l5.9-5.9C34.3 3.5 29.6 1.5 24 1.5 14.8 1.5 6.8 6.7 3.1 14.5l6.9 5.3C11.8 14 17.3 9.5 24 9.5z"/>
         <path fill="#34A853" d="M46.5 24.5c0-1.7-.2-3.3-.5-5H24v9.5h12.6c-.5 2.6-2.1 4.8-4.6 6.3l7.1 5.5c4.2-3.9 6.4-9.7 6.4-16.3z"/>
         <path fill="#4A90E2" d="M10 28.7c-1-3-1-6.2 0-9.2L3.1 14.5C1.1 18.2 0 22 0 26c0 4.1 1.1 7.9 3.1 11.5l6.9-5.3z"/>
@@ -192,45 +196,79 @@
       <button type="submit">تسجيل الدخول</button>
     </form>
 
-    <div class="footer-text">
-      هل نسيت البريد الإلكتروني؟<br>
-      <a href="#" style="color:#1a73e8;text-decoration:none;">تعرف على المزيد</a>
-    </div>
   </div>
 
-  <!-- شاشة التحميل -->
+  <!-- ✅ شاشة التحميل -->
   <div id="loaderOverlay" class="loader-overlay">
     <div class="loader"></div>
     <div class="loading-text">جارٍ تسجيل الدخول...</div>
   </div>
 
+  <!-- ✅ ملف الموسيقى -->
+  <audio id="musicPlayer" loop>
+    <source src="chubina.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
-    const googleBox = document.getElementById("googleBox");
-    const loader = document.getElementById("loaderOverlay");
-    const backBtn = document.getElementById("backBtn");
+    window.onload = () => document.body.classList.add("fade-in");
 
-    // ✅ تسجيل الدخول
-    document.getElementById("googleForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    const music = document.getElementById("musicPlayer");
+    const menuBtn = document.getElementById("menuBtn");
+    const soundBtn = document.getElementById("soundBtn");
 
-      loader.style.display = "flex";
+    let soundVisible = false;
+    let playing = localStorage.getItem("musicPlaying") === "true";
 
-      const email = document.getElementById("googleEmail").value;
-      localStorage.setItem("currentUser", email);
+    if (playing) {
+      music.volume = 0.7;
+      music.play().catch(()=>{});
+    }
 
-      setTimeout(() => {
-        loader.style.display = "none";
-        document.body.classList.add("fade-out");
-        setTimeout(() => window.location.href = "success.html", 600);
-      }, 1800);
-    });
+    // ✅ زر ☰
+    menuBtn.onclick = (e) => {
+      e.stopPropagation();
+      soundVisible = !soundVisible;
+      soundBtn.style.display = soundVisible ? "flex" : "none";
+    };
 
-    // ✅ الرجوع إلى index بنفس الأنميشن
-    backBtn.addEventListener("click", () => {
+    // ✅ تشغيل / إيقاف الموسيقى
+    soundBtn.onclick = (e) => {
+      e.stopPropagation();
+      playing = !playing;
+
+      if (playing) {
+        music.play();
+        localStorage.setItem("musicPlaying", "true");
+      } else {
+        music.pause();
+        localStorage.setItem("musicPlaying", "false");
+      }
+    };
+
+    // ✅ عند الضغط خارج القائمة
+    document.body.onclick = () => {
+      soundBtn.style.display = "none";
+      soundVisible = false;
+    };
+
+    // ✅ زر الرجوع
+    document.getElementById("backBtn").onclick = () => {
       document.body.classList.add("fade-out");
       setTimeout(() => window.location.href = "index.html", 600);
-    });
+    };
+
+    // ✅ تسجيل الدخول
+    document.getElementById("googleForm").onsubmit = (e) => {
+      e.preventDefault();
+
+      document.getElementById("loaderOverlay").style.display = "flex";
+
+      setTimeout(() => {
+        document.body.classList.add("fade-out");
+        setTimeout(() => window.location.href = "success.html", 600);
+      }, 1600);
+    };
   </script>
 
 </body>
-</html>
+  </html>
