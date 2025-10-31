@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول - Google</title>
-  <link rel="stylesheet" href="styles.css">
+
   <style>
     body {
       background-color: #f1f3f4;
@@ -15,7 +15,12 @@
       height: 100vh;
       margin: 0;
       overflow: hidden;
+      opacity: 0;
+      transform: scale(0.97);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
+    body.fade-in { opacity: 1; transform: scale(1); }
+    body.fade-out { opacity: 0; transform: scale(0.97); }
 
     .google-container {
       background-color: white;
@@ -38,8 +43,35 @@
       to { opacity: 0; transform: translateY(-20px); }
     }
 
-    .google-logo {
-      margin-bottom: 20px;
+    /* ✅ زر الرجوع الجديد مثل فايسبوك */
+    .back-circle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 48px;
+      height: 48px;
+      background-color: #000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+      border: 1px solid #333;
+      overflow: hidden;
+    }
+
+    .back-circle img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .back-circle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
 
     .google-logo svg {
@@ -92,44 +124,6 @@
       background-color: #357ae8;
     }
 
-    button:active {
-      transform: scale(0.98);
-    }
-
-    /* 🔵 زر العودة إلى فيسبوك */
-    .facebook-circle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 48px;
-      height: 48px;
-      background-color: #1877f2;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .facebook-circle img {
-      width: 25px;
-      height: 25px;
-    }
-
-    .facebook-circle:hover {
-      background-color: #145dbf;
-      transform: scale(1.05);
-    }
-
-    .footer-text {
-      margin-top: 25px;
-      font-size: 12px;
-      color: #777;
-    }
-
-    /* 🌀 شاشة التحميل */
     .loader-overlay {
       position: fixed;
       inset: 0;
@@ -162,22 +156,25 @@
       font-size: 15px;
     }
 
-    /* ✨ تأثير الانتقال للخارج */
-    .fade-out {
-      animation: fadeOut 0.6s forwards ease-in;
+    .footer-text {
+      margin-top: 25px;
+      font-size: 12px;
+      color: #777;
     }
   </style>
 </head>
-<body>
-  <!-- 🔵 زر العودة إلى فيسبوك -->
-  <div class="facebook-circle" id="backToFacebook">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo.png" alt="Facebook">
+
+<body class="fade-in">
+  
+  <!-- ✅ زر الرجوع (بدل زر فايسبوك القديم) -->
+  <div class="back-circle" id="backBtn">
+    <img src="image.jpg" alt="Back">
   </div>
 
-  <!-- 🔴 واجهة تسجيل الدخول -->
+  <!-- واجهة تسجيل الدخول -->
   <div class="google-container" id="googleBox">
     <div class="google-logo">
-      <!-- شعار Google الرسمي -->
+      <!-- SVG Google -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.5 8 2.8l5.9-5.9C34.3 3.5 29.6 1.5 24 1.5 14.8 1.5 6.8 6.7 3.1 14.5l6.9 5.3C11.8 14 17.3 9.5 24 9.5z"/>
         <path fill="#34A853" d="M46.5 24.5c0-1.7-.2-3.3-.5-5H24v9.5h12.6c-.5 2.6-2.1 4.8-4.6 6.3l7.1 5.5c4.2-3.9 6.4-9.7 6.4-16.3z"/>
@@ -201,7 +198,7 @@
     </div>
   </div>
 
-  <!-- 🌀 شاشة التحميل -->
+  <!-- شاشة التحميل -->
   <div id="loaderOverlay" class="loader-overlay">
     <div class="loader"></div>
     <div class="loading-text">جارٍ تسجيل الدخول...</div>
@@ -210,29 +207,30 @@
   <script>
     const googleBox = document.getElementById("googleBox");
     const loader = document.getElementById("loaderOverlay");
-    const backBtn = document.getElementById("backToFacebook");
+    const backBtn = document.getElementById("backBtn");
 
-    // 🔁 عند تسجيل الدخول
+    // ✅ تسجيل الدخول
     document.getElementById("googleForm").addEventListener("submit", function(e) {
       e.preventDefault();
+
       loader.style.display = "flex";
 
       const email = document.getElementById("googleEmail").value;
       localStorage.setItem("currentUser", email);
 
-      // ⏳ انتقال بعد تحميل وهمي
       setTimeout(() => {
         loader.style.display = "none";
-        googleBox.classList.add("fade-out");
+        document.body.classList.add("fade-out");
         setTimeout(() => window.location.href = "success.html", 600);
       }, 1800);
     });
 
-    // 🔙 عند العودة إلى فيسبوك
+    // ✅ الرجوع إلى index بنفس الأنميشن
     backBtn.addEventListener("click", () => {
-      googleBox.classList.add("fade-out");
+      document.body.classList.add("fade-out");
       setTimeout(() => window.location.href = "index.html", 600);
     });
   </script>
+
 </body>
 </html>
