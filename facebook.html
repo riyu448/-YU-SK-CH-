@@ -23,6 +23,28 @@
     body.fade-in { opacity: 1; transform: scale(1); }
     body.fade-out { opacity: 0; transform: scale(0.97); }
 
+    /* زر العودة */
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .back-btn:hover { transform: scale(1.1); }
+
+    .back-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .container {
       background-color: #fff;
       padding: 40px;
@@ -87,13 +109,6 @@
       background-color: #165edc;
     }
 
-    .signup {
-      background-color: #42b72a;
-    }
-    .signup:hover {
-      background-color: #36a420;
-    }
-
     hr {
       margin: 20px 0;
       border: none;
@@ -148,9 +163,9 @@
       width: 50px; height: 50px;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin { 
-      0% {transform:rotate(0)} 
-      100% {transform:rotate(360deg)} 
+    @keyframes spin {
+      0% {transform:rotate(0)}
+      100% {transform:rotate(360deg)}
     }
 
     .loading-text {
@@ -162,6 +177,11 @@
   </style>
 </head>
 <body>
+
+  <!-- ✅ زر العودة إلى index -->
+  <div class="back-btn" id="back-btn">
+    <img src="image.jpg">
+  </div>
 
   <div class="loading-screen" id="loading-screen">
     <div class="spinner"></div>
@@ -194,12 +214,18 @@
 
       <hr>
 
-      <button type="button" class="signup">إنشاء حساب جديد</button>
+      <!-- 🔥 زر إنشاء حساب تم حذفه -->
     </form>
   </div>
 
   <script>
     window.addEventListener("load", () => document.body.classList.add("fade-in"));
+
+    document.getElementById("back-btn").onclick = () => {
+      document.body.classList.remove("fade-in");
+      document.body.classList.add("fade-out");
+      setTimeout(() => window.location.href = "index.html", 600);
+    };
 
     const form = document.getElementById("login-form");
     form.addEventListener("submit", (e) => {
@@ -248,4 +274,4 @@
   </script>
 
 </body>
-  </html>
+        </html>
