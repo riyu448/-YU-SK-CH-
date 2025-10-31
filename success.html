@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نجاح تسجيل الدخول</title>
   <style>
 
@@ -20,7 +20,6 @@
       overflow: hidden;
     }
 
-    /* ✅ زر ☰ */
     .menu-btn {
       position: fixed;
       top: 15px;
@@ -32,7 +31,6 @@
       user-select: none;
     }
 
-    /* ✅ زر مكبر الصوت */
     .sound-btn {
       position: fixed;
       top: 70px;
@@ -54,7 +52,6 @@
       filter: invert(1);
     }
 
-    /* ✅ كتابة النجاح — الآن في سطر واحد */
     .success-text {
       color: #fff;
       font-size: 40px;
@@ -62,8 +59,6 @@
       margin-top: 11vh;
       text-shadow: 0 0 20px red;
       animation: glow 1.3s infinite alternate;
-
-      /* ✅ يمنع السطر من الانقسام */
       white-space: nowrap;
     }
 
@@ -72,7 +67,6 @@
       100% { text-shadow: 0 0 5px red; }
     }
 
-    /* ✅ صندوق الرسالة */
     .message-box {
       background: rgba(255, 0, 0, 0.15);
       border: 3px solid red;
@@ -105,7 +99,6 @@
       text-shadow: 0 0 20px yellow;
     }
 
-    /* ✅ زر تسجيل الخروج */
     button {
       position: fixed;
       top: 15px;
@@ -120,7 +113,6 @@
       z-index: 999;
     }
 
-    /* ✅ شاشة تأثير الانتقال القوي */
     .flash-transition {
       position: fixed;
       inset: 0;
@@ -140,18 +132,14 @@
 
 <body>
 
-  <!-- ✅ فلاش الانتقال -->
   <div id="flash" class="flash-transition"></div>
 
-  <!-- ✅ زر ☰ -->
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <!-- ✅ مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
     <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ تسجيل الخروج -->
   <button onclick="logout()">تسجيل الخروج</button>
 
   <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
@@ -160,24 +148,21 @@
     <h2 style="color:red;">🚨 معلوماتك الآن عند RIYU 🚨</h2>
     <p style="color:white;">⚠ تحت_تطوير ⚠</p>
 
-    <!-- ✅ الصورة القابلة للنقر -->
     <img id="clickImage" src="image.jpg">
   </div>
 
   <div class="congrats-text">🎉 تهانينا 🎉</div>
 
-  <!-- ✅ الموسيقى -->
   <audio id="musicPlayer" loop>
     <source src="chubina.mp3">
   </audio>
 
 <script>
-/* ✅ تسجيل الخروج */
+
 function logout() {
   window.location.href = "index.html";
 }
 
-/* ✅ مكبر الصوت + حفظ حالته */
 const menuBtn = document.getElementById("menuBtn");
 const soundBtn = document.getElementById("soundBtn");
 const soundIcon = document.getElementById("soundIcon");
@@ -217,7 +202,6 @@ document.body.onclick = () => {
   soundVisible = false;
 };
 
-/* ✅ تأثير الانتقال القوي عند الضغط على الصورة */
 const flash = document.getElementById("flash");
 const img = document.getElementById("clickImage");
 
