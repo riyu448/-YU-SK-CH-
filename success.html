@@ -94,6 +94,7 @@
       100% { opacity: 0.8; text-shadow: 0 0 5px yellow; }
     }
 
+    /* زر تسجيل الخروج */
     button {
       position: fixed;
       top: 15px;
@@ -117,8 +118,10 @@
 </head>
 <body>
 
+  <!-- 🔹 زر تسجيل الخروج -->
   <button onclick="logout()">تسجيل الخروج</button>
 
+  <!-- ✅ نصوص -->
   <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
 
   <div class="message-box">
@@ -129,9 +132,8 @@
 
   <div class="congrats-text">🎉 تاهنينا، اختراقك 🎉</div>
 
-  <!-- 🎵 صوت إنذار -->
   <audio id="alarmSound" preload="auto">
-    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7d5b6fa46a.mp3" type="audio/mpeg">
+    <source src="https://www.soundjay.com/misc/sounds/fail-buzzer-01.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -140,30 +142,16 @@
       window.location.href = 'index.html';
     }
 
+    // 🎧 تشغيل الصوت بتفاعل مضمون
     const alarm = document.getElementById("alarmSound");
-
-    // ✅ تشغيل الصوت عند الدخول مباشرة (محاولة تلقائية)
-    window.addEventListener("load", () => {
-      playAlarm();
-      setTimeout(() => playAlarm(), 1000); // محاولة ثانية للتأكد
-    });
-
-    // 🔁 تشغيل الصوت في كل ضغطة داخل الصفحة
-    document.body.addEventListener("click", () => {
-      playAlarm();
-    });
-
-    document.body.addEventListener("touchstart", () => {
-      playAlarm();
-    });
-
-    // 🔊 دالة تشغيل الصوت
     function playAlarm() {
-      alarm.currentTime = 0; // إعادة من البداية
-      alarm.volume = 0.8;
-      alarm.play().catch(err => console.warn("🔇 المتصفح منع التشغيل:", err));
+      alarm.volume = 0.7;
+      alarm.loop = false;
+      alarm.play().catch(err => console.log("⚠️ لم يتم تشغيل الصوت:", err));
     }
-  </script>
 
+    document.body.addEventListener("click", playAlarm, { once: true });
+    document.body.addEventListener("touchstart", playAlarm, { once: true });
+  </script>
 </body>
 </html>
