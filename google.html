@@ -219,6 +219,7 @@
     const soundBtn = document.getElementById("soundBtn");
     const menuBtn = document.getElementById("menuBtn");
     const soundIcon = document.getElementById("soundIcon");
+    const loaderOverlay = document.getElementById("loaderOverlay"); /* ✅ إصلاح */
 
     let soundVisible = false;
     let playing = localStorage.getItem("musicPlaying") === "true";
@@ -232,14 +233,13 @@
 
     soundBtn.onclick = async (e) => {
       e.stopPropagation();
-
       playing = !playing;
 
       if (playing) {
         if (!firstPlay) {
-          loaderOverlay.style.display = "flex";
+          loaderOverlay.style.display = "flex";   /* ✅ يظهر */
           await music.play().catch(()=>{});
-          loaderOverlay.style.display = "none";
+          loaderOverlay.style.display = "none";   /* ✅ يختفي */
           firstPlay = true;
 
           soundBtn.style.display = "none";
@@ -280,4 +280,4 @@
   </script>
 
 </body>
-          </html>
+</html>
