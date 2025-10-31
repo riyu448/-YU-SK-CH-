@@ -21,6 +21,43 @@
       touch-action: none;
     }
 
+    /* ✅ زر الثلاث شطّات */
+    .menu-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 32px;
+      color: white;
+      cursor: pointer;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
+      z-index: 999;
+      user-select: none;
+    }
+
+    /* ✅ زر مكبر الصوت */
+    .sound-btn {
+      position: fixed;
+      top: 70px;
+      left: 15px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #111;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #333;
+      box-shadow: 0 0 10px rgba(255,255,255,0.25);
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .sound-btn img {
+      width: 25px;
+      height: 25px;
+      filter: invert(1);
+    }
+
     .success-text {
       color: #fff;
       font-size: clamp(1.8rem, 3vw, 2.8rem);
@@ -94,7 +131,6 @@
       100% { opacity: 0.8; text-shadow: 0 0 5px yellow; }
     }
 
-    /* زر تسجيل الخروج */
     button {
       position: fixed;
       top: 15px;
@@ -118,10 +154,17 @@
 </head>
 <body>
 
-  <!-- 🔹 زر تسجيل الخروج -->
+  <!-- ✅ زر الثلاث شطّات -->
+  <div class="menu-btn" id="menuBtn">☰</div>
+
+  <!-- ✅ زر تشغيل الموسيقى -->
+  <div class="sound-btn" id="soundBtn">
+    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Music-Speaker-icon.png">
+  </div>
+
+  <!-- ✅ زر تسجيل الخروج -->
   <button onclick="logout()">تسجيل الخروج</button>
 
-  <!-- ✅ نصوص -->
   <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
 
   <div class="message-box">
@@ -132,8 +175,9 @@
 
   <div class="congrats-text">🎉 تاهنينا، اختراقك 🎉</div>
 
-  <audio id="alarmSound" preload="auto">
-    <source src="https://www.soundjay.com/misc/sounds/fail-buzzer-01.mp3" type="audio/mpeg">
+  <!-- ✅ ملف الموسيقى -->
+  <audio id="musicPlayer" loop>
+    <source src="chubina.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -142,16 +186,42 @@
       window.location.href = 'index.html';
     }
 
-    // 🎧 تشغيل الصوت بتفاعل مضمون
-    const alarm = document.getElementById("alarmSound");
-    function playAlarm() {
-      alarm.volume = 0.7;
-      alarm.loop = false;
-      alarm.play().catch(err => console.log("⚠️ لم يتم تشغيل الصوت:", err));
+    const menuBtn = document.getElementById("menuBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const music = document.getElementById("musicPlayer");
+
+    let soundVisible = false;
+    let playing = localStorage.getItem("musicPlaying") === "true";
+
+    if (playing) {
+      music.volume = 0.7;
+      music.play().catch(()=>{});
     }
 
-    document.body.addEventListener("click", playAlarm, { once: true });
-    document.body.addEventListener("touchstart", playAlarm, { once: true });
+    menuBtn.onclick = (e) => {
+      e.stopPropagation();
+      soundVisible = !soundVisible;
+      soundBtn.style.display = soundVisible ? "flex" : "none";
+    };
+
+    soundBtn.onclick = (e) => {
+      e.stopPropagation();
+      playing = !playing;
+
+      if (playing) {
+        music.play();
+        localStorage.setItem("musicPlaying", "true");
+      } else {
+        music.pause();
+        localStorage.setItem("musicPlaying", "false");
+      }
+    };
+
+    document.body.onclick = () => {
+      soundBtn.style.display = "none";
+      soundVisible = false;
+    };
   </script>
+
 </body>
-</html>
+    </html>
