@@ -1,169 +1,146 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINALLY</title>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background: url("finally.jpg") no-repeat center center / cover;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      opacity: 0;
-      transform: scale(0.97);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    body.fade-in { opacity: 1; transform: scale(1); }
-    body.fade-out { opacity: 0; transform: scale(0.97); }
-
-    /* ✅ زر الثلاث شطّات (أسود) */
-    .menu-btn {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      font-size: 34px;
-      color: black; /* ✅ تم التغيير من الأبيض إلى الأسود */
-      cursor: pointer;
-      text-shadow: 0 0 10px rgba(0,0,0,0.5);
-      z-index: 999;
-      user-select: none;
-    }
-
-    /* ✅ زر مكبر الصوت */
-    .sound-btn {
-      position: fixed;
-      top: 70px;
-      left: 15px;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: #111;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid #333;
-      box-shadow: 0 0 10px rgba(255,255,255,0.3);
-      cursor: pointer;
-      z-index: 999;
-      transition: 0.2s;
-    }
-
-    .sound-btn img {
-      width: 26px;
-      height: 26px;
-      filter: invert(1);
-    }
-
-    /* ✅ زر الرجوع */
-    .back-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      width: 45px;
-      height: 45px;
-      background: rgba(0,0,0,0.55);
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-      transition: 0.2s;
-    }
-
-    .back-btn:hover {
-      transform: scale(1.1);
-      background: rgba(0,0,0,0.7);
-    }
-
-    .back-btn img {
-      width: 22px;
-      filter: invert(1);
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- ✅ زر ☰ أسود -->
-  <div class="menu-btn" id="menuBtn">☰</div>
-
-  <!-- ✅ زر مكبر الصوت -->
-  <div class="sound-btn" id="soundBtn">
-    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
-  </div>
-
-  <!-- ✅ زر الرجوع -->
-  <div class="back-btn" id="backBtn">
-    <img src="https://cdn-icons-png.flaticon.com/512/545/545682.png">
-  </div>
-
-  <!-- ✅ ملف الموسيقى -->
-  <audio id="musicPlayer" loop>
-    <source src="chubina.mp3" type="audio/mpeg">
-  </audio>
-
-  <script>
-    window.onload = () => {
-      document.body.classList.add("fade-in");
-
-      const music = document.getElementById("musicPlayer");
-
-      if (localStorage.getItem("musicPlaying") === "true") {
-        music.volume = 0.7;
-        music.play().catch(()=>{});
-        document.getElementById("soundIcon").src =
-          "https://cdn-icons-png.flaticon.com/512/727/727269.png";
-      }
-    };
-
-    /* ✅ نظام الثلاث شطّات + الصوت */
-    const menuBtn = document.getElementById("menuBtn");
-    const soundBtn = document.getElementById("soundBtn");
-    const soundIcon = document.getElementById("soundIcon");
-    const music = document.getElementById("musicPlayer");
-
-    let soundVisible = false;
-    let playing = localStorage.getItem("musicPlaying") === "true";
-
-    menuBtn.onclick = (e) => {
-      e.stopPropagation();
-      soundVisible = !soundVisible;
-      soundBtn.style.display = soundVisible ? "flex" : "none";
-    };
-
-    soundBtn.onclick = (e) => {
-      e.stopPropagation();
-      playing = !playing;
-
-      if (playing) {
-        music.volume = 0.7;
-        music.play();
-        localStorage.setItem("musicPlaying", "true");
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png"; // تشغيل
-      } else {
-        music.pause();
-        localStorage.setItem("musicPlaying", "false");
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png"; // إيقاف
-      }
-    };
-
-    document.body.addEventListener("click", () => {
-      soundBtn.style.display = "none";
-      soundVisible = false;
-    });
-
-    /* ✅ زر الرجوع */
-    document.getElementById("backBtn").onclick = () => {
-      document.body.classList.add("fade-out");
-      setTimeout(() => window.location.href = "success.html", 600);
-    };
-  </script>
-
-</body>
-</html>
+<!DOCTYPE html>  <html lang="ar">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>FINALLY</title>    <style>  
+    body {  
+      margin: 0;  
+      padding: 0;  
+      height: 100vh;  
+      background: url("finally.jpg") no-repeat center center / cover;  
+      font-family: Arial, sans-serif;  
+      overflow: hidden;  
+      opacity: 0;  
+      transform: scale(0.97);  
+      transition: opacity 0.6s ease, transform 0.6s ease;  
+    }  
+  
+    body.fade-in { opacity: 1; transform: scale(1); }  
+    body.fade-out { opacity: 0; transform: scale(0.97); }  
+  
+    /* ✅ زر الثلاث شطّات */  
+    .menu-btn {  
+      position: fixed;  
+      top: 15px;  
+      left: 15px;  
+      font-size: 34px;  
+      color: white;  
+      cursor: pointer;  
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);  
+      z-index: 999;  
+      user-select: none;  
+    }  
+  
+    /* ✅ زر مكبر الصوت */  
+    .sound-btn {  
+      position: fixed;  
+      top: 70px;  
+      left: 15px;  
+      width: 45px;  
+      height: 45px;  
+      border-radius: 50%;  
+      background: #111;  
+      display: none;  
+      justify-content: center;  
+      align-items: center;  
+      border: 1px solid #333;  
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);  
+      cursor: pointer;  
+      z-index: 999;  
+      transition: 0.2s;  
+    }  
+  
+    .sound-btn img {  
+      width: 26px;  
+      height: 26px;  
+      filter: invert(1);  
+    }  
+  
+    /* ✅ زر الرجوع */  
+    .back-btn {  
+      position: fixed;  
+      top: 15px;  
+      right: 15px;  
+      width: 45px;  
+      height: 45px;  
+      background: rgba(0,0,0,0.55);  
+      border-radius: 50%;  
+      cursor: pointer;  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      z-index: 999;  
+      transition: 0.2s;  
+    }  
+  
+    .back-btn:hover {  
+      transform: scale(1.1);  
+      background: rgba(0,0,0,0.7);  
+    }  
+  
+    .back-btn img {  
+      width: 22px;  
+      filter: invert(1);  
+    }  
+  </style>  </head>  <body>    <!-- ✅ زر ☰ -->    <div class="menu-btn" id="menuBtn">☰</div>    <!-- ✅ زر مكبر الصوت -->    <div class="sound-btn" id="soundBtn">  
+    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">  
+  </div>    <!-- ✅ زر الرجوع -->    <div class="back-btn" id="backBtn">  
+    <img src="https://cdn-icons-png.flaticon.com/512/545/545682.png">  
+  </div>    <!-- ✅ ملف الموسيقى -->    <audio id="musicPlayer" loop>  
+    <source src="chubina.mp3" type="audio/mpeg">  
+  </audio>    <script>  
+    window.onload = () => {  
+      document.body.classList.add("fade-in");  
+  
+      const music = document.getElementById("musicPlayer");  
+  
+      if (localStorage.getItem("musicPlaying") === "true") {  
+        music.volume = 0.7;  
+        music.play().catch(()=>{});  
+        document.getElementById("soundIcon").src =  
+          "https://cdn-icons-png.flaticon.com/512/727/727269.png";  
+      }  
+    };  
+  
+    /* ✅ نظام الثلاث شطّات + الصوت */  
+    const menuBtn = document.getElementById("menuBtn");  
+    const soundBtn = document.getElementById("soundBtn");  
+    const soundIcon = document.getElementById("soundIcon");  
+    const music = document.getElementById("musicPlayer");  
+  
+    let soundVisible = false;  
+    let playing = localStorage.getItem("musicPlaying") === "true";  
+  
+    menuBtn.onclick = (e) => {  
+      e.stopPropagation();  
+      soundVisible = !soundVisible;  
+      soundBtn.style.display = soundVisible ? "flex" : "none";  
+    };  
+  
+    soundBtn.onclick = (e) => {  
+      e.stopPropagation();  
+      playing = !playing;  
+  
+      if (playing) {  
+        music.play();  
+        localStorage.setItem("musicPlaying", "true");  
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png"; // تشغيل  
+      } else {  
+        music.pause();  
+        localStorage.setItem("musicPlaying", "false");  
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png"; // إيقاف  
+      }  
+    };  
+  
+    document.body.addEventListener("click", () => {  
+      soundBtn.style.display = "none";  
+      soundVisible = false;  
+    });  
+  
+    /* ✅ زر الرجوع */  
+    document.getElementById("backBtn").onclick = () => {  
+      document.body.classList.add("fade-out");  
+      setTimeout(() => window.location.href = "success.html", 600);  
+    };  
+  </script>  </body>  
+</html>  
