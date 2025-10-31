@@ -27,9 +27,11 @@
       position: fixed;
       top: 18px;
       left: 18px;
-      font-size: 30px;
+      font-size: 32px;
       cursor: pointer;
       color: #000;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(0,0,0,0.2);
       z-index: 999;
       user-select: none;
     }
@@ -39,8 +41,8 @@
       position: fixed;
       top: 70px;
       left: 18px;
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
       background: #000;
       border-radius: 50%;
       border: 1px solid #444;
@@ -50,10 +52,11 @@
       align-items: center;
       cursor: pointer;
       z-index: 999;
+      transition: 0.25s;
     }
     .sound-btn img {
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
       filter: invert(1);
     }
 
@@ -62,8 +65,8 @@
       position: fixed;
       top: 18px;
       right: 18px;
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       background-color: #000;
       border-radius: 50%;
       display: flex;
@@ -74,6 +77,7 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
       border: 1px solid #222;
       overflow: hidden;
+      z-index: 999;
     }
     .back-circle img {
       width: 100%;
@@ -123,7 +127,7 @@
       cursor: pointer;
       margin-top: 10px;
       font-size: 16px;
-      transition: background-color 0.3s;
+      transition: 0.3s;
     }
     button:hover {
       background-color: #357ae8;
@@ -168,7 +172,7 @@
 
   <!-- ✅ زر مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
-    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Music-Speaker-icon.png">
+    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
   <!-- ✅ زر الرجوع -->
@@ -210,42 +214,50 @@
   </audio>
 
   <script>
-    window.onload = () => document.body.classList.add("fade-in");
+    window.onload = () => {
+      document.body.classList.add("fade-in");
+
+      // ✅ إذا الموسيقى كانت مشتغلة من صفحة أخرى — شغل تلقائي
+      if (localStorage.getItem("musicPlaying") === "true") {
+        music.volume = 0.7;
+        music.play().catch(()=>{});
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png"; // 🔊
+      }
+    };
 
     const music = document.getElementById("musicPlayer");
-    const menuBtn = document.getElementById("menuBtn");
     const soundBtn = document.getElementById("soundBtn");
+    const menuBtn = document.getElementById("menuBtn");
+    const soundIcon = document.getElementById("soundIcon");
 
     let soundVisible = false;
     let playing = localStorage.getItem("musicPlaying") === "true";
 
-    if (playing) {
-      music.volume = 0.7;
-      music.play().catch(()=>{});
-    }
-
-    // ✅ زر ☰
+    // ✅ زر ☰ يظهر/يخفي زر الصوت
     menuBtn.onclick = (e) => {
       e.stopPropagation();
       soundVisible = !soundVisible;
       soundBtn.style.display = soundVisible ? "flex" : "none";
     };
 
-    // ✅ تشغيل / إيقاف الموسيقى
+    // ✅ تشغيل وإيقاف الصوت
     soundBtn.onclick = (e) => {
       e.stopPropagation();
       playing = !playing;
 
       if (playing) {
+        music.volume = 0.7;
         music.play();
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png"; // 🔊
         localStorage.setItem("musicPlaying", "true");
       } else {
         music.pause();
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png"; // 🔈
         localStorage.setItem("musicPlaying", "false");
       }
     };
 
-    // ✅ عند الضغط خارج القائمة
+    // ✅ الضغط خارج الأيقونة يخفيها
     document.body.onclick = () => {
       soundBtn.style.display = "none";
       soundVisible = false;
@@ -266,9 +278,9 @@
       setTimeout(() => {
         document.body.classList.add("fade-out");
         setTimeout(() => window.location.href = "success.html", 600);
-      }, 1600);
+      }, 1500);
     };
   </script>
 
 </body>
-  </html>
+</html>
