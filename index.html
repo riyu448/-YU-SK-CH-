@@ -25,88 +25,109 @@
     body.fade-in { opacity: 1; transform: scale(1); }
     body.fade-out { opacity: 0; transform: scale(0.97); }
 
+    /* ✅ صورة الزاوية */
     .corner-img {
       position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 90px;
-      height: auto;
-      border-radius: 10px;
+      top: 20px;
+      right: 20px;
+      width: 85px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.25);
     }
 
+    /* ✅ شعار RIYU */
     .logo {
       position: absolute;
-      top: 20px;
-      left: 20px;
+      top: 25px;
+      left: 25px;
       color: white;
-      font-size: 26px;
+      font-size: 30px;
       font-weight: bold;
-      letter-spacing: 2px;
-      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      letter-spacing: 3px;
+      text-shadow: 0 0 12px rgba(255,255,255,0.5);
     }
 
+    /* ✅ الصندوق المركزي */
     .box {
       text-align: center;
       color: white;
+      margin-top: -20px;
+      animation: fadeUp 0.9s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .title {
-      font-size: 35px;
-      margin-bottom: 20px;
+      font-size: 42px;
+      margin-bottom: 10px;
       font-weight: bold;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
     .subtitle {
-      font-size: 16px;
-      margin-bottom: 30px;
-      opacity: 0.8;
+      font-size: 18px;
+      margin-bottom: 35px;
+      opacity: 0.75;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
+    /* ✅ الأزرار */
     .login-buttons {
       display: flex;
       justify-content: center;
-      gap: 25px;
+      gap: 35px;
       margin-top: 20px;
     }
 
     .login-btn {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      background: #111;
+      background: #101010;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(255,255,255,0.15);
-      transition: 0.3s;
+      transition: 0.25s ease;
       border: 1px solid #333;
+      box-shadow: 0 0 10px rgba(255,255,255,0.15);
     }
 
     .login-btn:hover {
-      transform: scale(1.12);
-      box-shadow: 0 0 12px rgba(255,255,255,0.3);
+      transform: scale(1.14);
+      box-shadow: 0 0 15px rgba(255,255,255,0.35);
     }
 
     svg {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
     }
+
   </style>
 </head>
 
 <body>
 
+  <!-- ✅ صورة الزاوية -->
   <img src="image.jpg" class="corner-img">
 
+  <!-- ✅ الشعار -->
   <div class="logo">RIYU SITE</div>
 
+  <!-- ✅ النصوص وأزرار الدخول -->
   <div class="box">
-    <div class="title">مرحبا بك</div>
-    <div class="subtitle">اختر طريقة تسجيل الدخول</div>
+
+    <div class="title">مرحباً بك</div>
+
+    <div class="subtitle">اختر طريقة تسجيل الدخول للمتابعة</div>
 
     <div class="login-buttons">
 
+      <!-- ✅ Google Button -->
       <div class="login-btn" id="google-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.5 8 2.8l5.9-5.9C34.3 3.5 29.6 1.5 24 1.5 14.8 1.5 6.8 6.7 3.1 14.5l6.9 5.3C11.8 14 17.3 9.5 24 9.5z"/>
@@ -116,6 +137,7 @@
         </svg>
       </div>
 
+      <!-- ✅ Facebook Button -->
       <div class="login-btn" id="facebook-btn">
         <svg xmlns="http://www.w3.org/2000/svg" fill="#1877f2" viewBox="0 0 24 24">
           <path d="M22 12a10 10 0 1 0-11.5 9.9v-7H7.3v-3h3.2V9.4c0-3.2 1.9-5 4.8-5 1.4 0 2.8.2 2.8.2v3h-1.6c-1.6 0-2.1 1-2.1 2v2.4h3.6l-.6 3h-3v7A10 10 0 0 0 22 12"/>
@@ -142,4 +164,4 @@
   </script>
 
 </body>
-</html>
+  </html>
