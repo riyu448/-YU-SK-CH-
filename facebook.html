@@ -2,7 +2,10 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ✅ منع الزوم وتكيّف الشاشة -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+
   <title>تسجيل الدخول - فيسبوك</title>
 
   <style>
@@ -48,7 +51,7 @@
       object-fit: cover;
     }
 
-    /* ✅ زر الثلاث شطّات */
+    /* ✅ زر ☰ */
     .menu-btn {
       position: absolute;
       top: 20px;
@@ -57,37 +60,54 @@
       color: black;
       cursor: pointer;
       font-weight: bold;
-      transition: 0.2s;
-      user-select: none;
       z-index: 999;
+      user-select: none;
     }
 
-    /* ✅ زر مكبر الصوت (مع وضعيتين تشغيل/إيقاف) */
+    /* ✅ زر مكبر الصوت */
     .sound-btn {
       position: absolute;
       top: 75px;
       left: 20px;
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background: #222;
+      background: #111;
       display: none;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.25);
       border: 1px solid #333;
       cursor: pointer;
-      transition: 0.2s;
       z-index: 999;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
     }
-
     .sound-btn img {
       width: 26px;
       height: 26px;
       filter: invert(1);
+      transition: 0.2s;
     }
 
-    /* ✅ حاوية تسجيل الدخول */
+    /* ✅ دائرة التحميل */
+    .loading-sound {
+      position: absolute;
+      top: 135px;
+      left: 29px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 4px solid #000;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+      display: none;
+      z-index: 999;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ✅ صندوق تسجيل الدخول */
     .container {
       background-color: #fff;
       padding: 40px;
@@ -96,12 +116,12 @@
       width: 360px;
       text-align: center;
       margin-top: 60px;
-      animation: fadeForm 0.7s ease;
+      animation: fadeInForm 0.7s ease;
     }
 
-    @keyframes fadeForm {
+    @keyframes fadeInForm {
       from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .logo h1 {
@@ -109,7 +129,6 @@
       font-size: 38px;
       margin-bottom: 5px;
     }
-
     .logo p {
       color: #606770;
       margin-bottom: 25px;
@@ -135,119 +154,99 @@
       transition: 0.3s;
     }
 
-    input:focus {
-      border-color: #1877f2;
-      outline: none;
-      box-shadow: 0 0 4px rgba(24,119,242,0.4);
+    input.error {
+      border: 2px solid red;
+      background: #ffeaea;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 13px;
+      text-align: right;
+      display: none;
     }
 
     button {
       width: 100%;
       padding: 10px;
-      background-color: #1877f2;
-      color: white;
+      margin-top: 15px;
+      background: #1877f2;
+      color: #fff;
       border: none;
       border-radius: 8px;
       font-size: 15px;
-      margin-top: 15px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    button:hover { background-color: #165edc; }
+    button:hover { background: #1664d3; }
 
-    .error-message {
-      color: red;
-      font-size: 12.5px;
-      display: none;
-      margin-top: 4px;
-      text-align: right;
-    }
-
-    input.error {
-      border: 1.5px solid red;
-      background-color: #ffeaea;
-    }
-
-    .terms {
-      margin-top: 15px;
-      font-size: 13px;
-      text-align: right;
-    }
-
+    /* ✅ شاشة تحميل تسجيل الدخول */
     .loading-screen {
       position: fixed;
       inset: 0;
       background: white;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       z-index: 9999;
       opacity: 0;
       pointer-events: none;
-      transition: 0.4s ease;
+      transition: opacity 0.4s ease;
     }
-
     .loading-screen.active {
       opacity: 1;
       pointer-events: all;
     }
-
     .spinner {
-      border: 5px solid #ddd;
-      border-top: 5px solid #1877f2;
+      width: 60px;
+      height: 60px;
+      border: 6px solid #ddd;
+      border-top-color: #1877f2;
       border-radius: 50%;
-      width: 55px;
-      height: 55px;
       animation: spin 1s linear infinite;
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
     .loading-text {
       margin-top: 15px;
       color: #1877f2;
-      font-size: 15px;
+      font-size: 17px;
       font-weight: bold;
     }
+
   </style>
 </head>
 
 <body>
 
-  <!-- ✅ زر العودة -->
   <div class="back-btn" id="backBtn">
     <img src="image.jpg">
   </div>
 
-  <!-- ✅ زر ☰ -->
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <!-- ✅ مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
     <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ شاشة التحميل -->
+  <!-- ✅ دائرة تحميل الصوت -->
+  <div class="loading-sound" id="loadingSound"></div>
+
+  <!-- ✅ شاشة تحميل الدخول -->
   <div class="loading-screen" id="loading">
     <div class="spinner"></div>
     <div class="loading-text">جاري تسجيل الدخول...</div>
   </div>
 
-  <!-- ✅ نموذج تسجيل الدخول -->
   <div class="container">
     <div class="logo">
       <h1>Facebook</h1>
-      <p>تواصل مع الأصدقاء والعالم من حولك.</p>
+      <p>تواصل مع العالم من حولك</p>
     </div>
 
     <form id="loginForm" novalidate>
       <label>البريد الإلكتروني أو رقم الهاتف</label>
       <input type="text" id="username">
-      <p class="error-message" id="usernameErr">أدخل Gmail ينتهي بـ @gmail.com أو رقم هاتف صالح (7 أرقام+).</p>
+      <p class="error-message" id="usernameErr">أدخل Gmail ينتهي بـ @gmail.com أو رقم هاتف صحيح (7 أرقام+).</p>
 
       <label>كلمة المرور</label>
       <input type="password" id="password">
@@ -257,101 +256,107 @@
     </form>
   </div>
 
-  <!-- ✅ الموسيقى -->
   <audio id="musicPlayer" loop>
     <source src="chubina.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    window.onload = () => document.body.classList.add("fade-in");
+<script>
+const music = document.getElementById("musicPlayer");
+const soundBtn = document.getElementById("soundBtn");
+const soundIcon = document.getElementById("soundIcon");
+const menuBtn = document.getElementById("menuBtn");
+const loadingSound = document.getElementById("loadingSound");
 
-    /* ✅ عناصر */
-    const menuBtn = document.getElementById("menuBtn");
-    const soundBtn = document.getElementById("soundBtn");
-    const soundIcon = document.getElementById("soundIcon");
-    const music = document.getElementById("musicPlayer");
+let soundVisible = false;
+let playing = localStorage.getItem("musicPlaying") === "true";
 
-    let soundVisible = false;
-    let playing = localStorage.getItem("musicPlaying") === "true";
+window.onload = () => {
+  document.body.classList.add("fade-in");
 
-    if (playing) {
-      music.volume = 0.7;
-      music.play().catch(()=>{});
-      soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
-    }
+  if (playing) {
+    music.volume = 0.7;
+    music.play().catch(()=>{});
+    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
+  }
+};
 
-    /* ✅ إظهار / إخفاء مكبر الصوت */
-    menuBtn.onclick = (e) => {
-      e.stopPropagation();
-      soundVisible = !soundVisible;
-      soundBtn.style.display = soundVisible ? "flex" : "none";
-    };
+menuBtn.onclick = (e) => {
+  e.stopPropagation();
+  soundVisible = !soundVisible;
+  soundBtn.style.display = soundVisible ? "flex" : "none";
+};
 
-    /* ✅ تشغيل / إيقاف الموسيقى */
-    soundBtn.onclick = (e) => {
-      e.stopPropagation();
-      playing = !playing;
+soundBtn.onclick = (e) => {
+  e.stopPropagation();
 
-      if (playing) {
-        music.play();
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
-        localStorage.setItem("musicPlaying", "true");
-      } else {
-        music.pause();
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
-        localStorage.setItem("musicPlaying", "false");
-      }
-    };
+  if (!playing) {
+    loadingSound.style.display = "block";
+  }
 
-    /* ✅ الضغط خارج القائمة */
-    document.body.onclick = () => {
-      soundBtn.style.display = "none";
-      soundVisible = false;
-    };
+  playing = !playing;
 
-    /* ✅ زر العودة */
-    document.getElementById("backBtn").onclick = () => {
+  if (playing) {
+    music.volume = 0.7;
+    music.play().then(() => {
+      loadingSound.style.display = "none";
+    });
+    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
+    localStorage.setItem("musicPlaying", "true");
+  } else {
+    music.pause();
+    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
+    localStorage.setItem("musicPlaying", "false");
+  }
+};
+
+document.body.onclick = () => {
+  soundBtn.style.display = "none";
+  soundVisible = false;
+};
+
+/* ✅ زر العودة */
+document.getElementById("backBtn").onclick = () => {
+  document.body.classList.add("fade-out");
+  setTimeout(() => window.location.href = "index.html", 600);
+};
+
+/* ✅ نموذج تسجيل الدخول */
+document.getElementById("loginForm").onsubmit = (e) => {
+  e.preventDefault();
+
+  let ok = true;
+  const user = username.value.trim();
+  const pass = password.value.trim();
+
+  usernameErr.style.display = "none";
+  passwordErr.style.display = "none";
+  username.classList.remove("error");
+  password.classList.remove("error");
+
+  const gmail = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const phone = /^\d{7,}$/;
+
+  if (!gmail.test(user) && !phone.test(user)) {
+    ok = false;
+    usernameErr.style.display = "block";
+    username.classList.add("error");
+  }
+
+  if (pass.length < 4) {
+    ok = false;
+    passwordErr.style.display = "block";
+    password.classList.add("error");
+  }
+
+  if (ok) {
+    loading.classList.add("active");
+    setTimeout(() => {
       document.body.classList.add("fade-out");
-      setTimeout(() => window.location.href = "index.html", 600);
-    };
-
-    /* ✅ التحقق من تسجيل الدخول */
-    document.getElementById("loginForm").onsubmit = (e) => {
-      e.preventDefault();
-
-      let valid = true;
-      const user = username.value.trim();
-      const pass = password.value.trim();
-
-      usernameErr.style.display = "none";
-      passwordErr.style.display = "none";
-      username.classList.remove("error");
-      password.classList.remove("error");
-
-      const gmail = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-      const phone = /^\d{7,}$/;
-
-      if (!gmail.test(user) && !phone.test(user)) {
-        valid = false;
-        usernameErr.style.display = "block";
-        username.classList.add("error");
-      }
-
-      if (pass.length < 4) {
-        valid = false;
-        passwordErr.style.display = "block";
-        password.classList.add("error");
-      }
-
-      if (valid) {
-        loading.classList.add("active");
-        setTimeout(() => {
-          document.body.classList.add("fade-out");
-          setTimeout(() => window.location.href = "success.html", 800);
-        }, 1500);
-      }
-    };
-  </script>
+      setTimeout(() => window.location.href = "success.html", 800);
+    }, 1500);
+  }
+};
+</script>
 
 </body>
-</html>
+  </html>
