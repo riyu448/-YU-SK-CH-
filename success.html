@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>نجاح تسجيل الدخول</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 100vh;
+      background-color: #000;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .success-text {
+      color: #fff;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: bold;
+      text-shadow: 0 0 15px #ff0000, 0 0 25px #ff0000;
+      margin-top: 10vh;
+      letter-spacing: 1px;
+      animation: flicker 1.2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; text-shadow: 0 0 10px #ff0000, 0 0 25px #ff0000; }
+      100% { opacity: 0.8; text-shadow: 0 0 3px #ff0000; }
+    }
+
+    .message-box {
+      background: rgba(255, 0, 0, 0.15);
+      border: 4px solid #ff0000;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      width: 85%;
+      max-width: 460px;
+      animation: pulse 2s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 25px rgba(255,0,0,0.8), inset 0 0 10px rgba(255,0,0,0.5); }
+      100% { box-shadow: 0 0 50px rgba(255,0,0,1), inset 0 0 25px rgba(255,0,0,0.8); }
+    }
+
+    h2 {
+      color: #ff0000;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #ff0000;
+    }
+
+    h2 .small-text {
+      font-size: 0.9em;
+      font-weight: bold;
+      color: #ff0000;
+    }
+
+    p {
+      color: white;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      margin: 0;
+      text-shadow: 0 0 8px #ff0000;
+    }
+
+    img {
+      width: 180px;
+      margin-top: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+    }
+
+    .congrats-text {
+      color: yellow;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: bold;
+      text-shadow: 0 0 15px yellow, 0 0 25px yellow;
+      margin-bottom: 12vh;
+      animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { opacity: 1; text-shadow: 0 0 15px yellow; }
+      100% { opacity: 0.8; text-shadow: 0 0 5px yellow; }
+    }
+
+    button {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background-color: #1877f2;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+      z-index: 999;
+    }
+
+    button:hover {
+      background-color: #0e5ad6;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="logout()">تسجيل الخروج</button>
+
+  <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
+
+  <div class="message-box">
+    <h2>🚨 <span class="small-text">RIYU</span> معلوماتك الآن عند 🚨</h2>
+    <p>⚠ تحت_تطوير ⚠</p>
+    <img src="image.jpg" alt="تحت_تطوير">
+  </div>
+
+  <div class="congrats-text">🎉 تاهنينا، اختراقك 🎉</div>
+
+  <!-- 🎵 صوت إنذار -->
+  <audio id="alarmSound" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7d5b6fa46a.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function logout() {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'index.html';
+    }
+
+    const alarm = document.getElementById("alarmSound");
+
+    // ✅ تشغيل الصوت عند الدخول مباشرة (محاولة تلقائية)
+    window.addEventListener("load", () => {
+      playAlarm();
+      setTimeout(() => playAlarm(), 1000); // محاولة ثانية للتأكد
+    });
+
+    // 🔁 تشغيل الصوت في كل ضغطة داخل الصفحة
+    document.body.addEventListener("click", () => {
+      playAlarm();
+    });
+
+    document.body.addEventListener("touchstart", () => {
+      playAlarm();
+    });
+
+    // 🔊 دالة تشغيل الصوت
+    function playAlarm() {
+      alarm.currentTime = 0; // إعادة من البداية
+      alarm.volume = 0.8;
+      alarm.play().catch(err => console.warn("🔇 المتصفح منع التشغيل:", err));
+    }
+  </script>
+
+</body>
+</html>
