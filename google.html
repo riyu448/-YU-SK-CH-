@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>تسجيل الدخول - Google</title>
 
   <style>
@@ -22,7 +22,6 @@
     body.fade-in { opacity: 1; transform: scale(1); }
     body.fade-out { opacity: 0; transform: scale(0.97); }
 
-    /* ✅ زر الثلاث شطّات */
     .menu-btn {
       position: fixed;
       top: 18px;
@@ -36,7 +35,6 @@
       user-select: none;
     }
 
-    /* ✅ زر الصوت */
     .sound-btn {
       position: fixed;
       top: 70px;
@@ -60,7 +58,6 @@
       filter: invert(1);
     }
 
-    /* ✅ زر الرجوع */
     .back-circle {
       position: fixed;
       top: 18px;
@@ -167,21 +164,17 @@
 
 <body>
 
-  <!-- ✅ زر ☰ -->
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <!-- ✅ زر مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
     <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ زر الرجوع -->
   <div class="back-circle" id="backBtn">
     <img src="image.jpg">
   </div>
 
   <div class="google-container" id="googleBox">
-
     <div class="google-logo">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="70px">
         <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.5 8 2.8l5.9-5.9C34.3 3.5 29.6 1.5 24 1.5 14.8 1.5 6.8 6.7 3.1 14.5l6.9 5.3C11.8 14 17.3 9.5 24 9.5z"/>
@@ -202,13 +195,11 @@
 
   </div>
 
-  <!-- ✅ شاشة التحميل -->
   <div id="loaderOverlay" class="loader-overlay">
     <div class="loader"></div>
     <div class="loading-text">جارٍ تسجيل الدخول...</div>
   </div>
 
-  <!-- ✅ ملف الموسيقى -->
   <audio id="musicPlayer" loop>
     <source src="chubina.mp3" type="audio/mpeg">
   </audio>
@@ -217,11 +208,10 @@
     window.onload = () => {
       document.body.classList.add("fade-in");
 
-      // ✅ إذا الموسيقى كانت مشتغلة من صفحة أخرى — شغل تلقائي
       if (localStorage.getItem("musicPlaying") === "true") {
         music.volume = 0.7;
         music.play().catch(()=>{});
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png"; // 🔊
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
       }
     };
 
@@ -232,48 +222,55 @@
 
     let soundVisible = false;
     let playing = localStorage.getItem("musicPlaying") === "true";
+    let firstPlay = false;
 
-    // ✅ زر ☰ يظهر/يخفي زر الصوت
     menuBtn.onclick = (e) => {
       e.stopPropagation();
       soundVisible = !soundVisible;
       soundBtn.style.display = soundVisible ? "flex" : "none";
     };
 
-    // ✅ تشغيل وإيقاف الصوت
-    soundBtn.onclick = (e) => {
+    soundBtn.onclick = async (e) => {
       e.stopPropagation();
+
       playing = !playing;
 
       if (playing) {
-        music.volume = 0.7;
-        music.play();
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png"; // 🔊
+        if (!firstPlay) {
+          loaderOverlay.style.display = "flex";
+          await music.play().catch(()=>{});
+          loaderOverlay.style.display = "none";
+          firstPlay = true;
+
+          soundBtn.style.display = "none";
+          soundVisible = false;
+        } else {
+          music.play();
+        }
+
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
         localStorage.setItem("musicPlaying", "true");
       } else {
         music.pause();
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png"; // 🔈
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
         localStorage.setItem("musicPlaying", "false");
       }
     };
 
-    // ✅ الضغط خارج الأيقونة يخفيها
     document.body.onclick = () => {
       soundBtn.style.display = "none";
       soundVisible = false;
     };
 
-    // ✅ زر الرجوع
     document.getElementById("backBtn").onclick = () => {
       document.body.classList.add("fade-out");
       setTimeout(() => window.location.href = "index.html", 600);
     };
 
-    // ✅ تسجيل الدخول
     document.getElementById("googleForm").onsubmit = (e) => {
       e.preventDefault();
 
-      document.getElementById("loaderOverlay").style.display = "flex";
+      loaderOverlay.style.display = "flex";
 
       setTimeout(() => {
         document.body.classList.add("fade-out");
@@ -283,4 +280,4 @@
   </script>
 
 </body>
-</html>
+          </html>
