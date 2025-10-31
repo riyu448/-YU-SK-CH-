@@ -35,11 +35,12 @@
       box-shadow: 0 0 10px rgba(255,255,255,0.25);
     }
 
-    /* ✅ شعار RIYU */
+    /* ✅ شعار RIYU في الوسط */
     .logo {
       position: absolute;
       top: 25px;
-      left: 25px;
+      left: 50%;
+      transform: translateX(-50%);
       color: white;
       font-size: 30px;
       font-weight: bold;
@@ -47,11 +48,53 @@
       text-shadow: 0 0 12px rgba(255,255,255,0.5);
     }
 
+    /* ✅ زر الثلاث شطّات */
+    .menu-btn {
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      font-size: 32px;
+      color: white;
+      cursor: pointer;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
+      transition: 0.2s;
+      user-select: none;
+    }
+
+    .menu-btn:active { transform: scale(0.9); }
+
+    /* ✅ زر مكبر الصوت */
+    .sound-btn {
+      position: absolute;
+      top: 75px;
+      left: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #111;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(255,255,255,0.25);
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: 0.2s;
+      z-index: 999;
+    }
+
+    .sound-btn img {
+      width: 25px;
+      height: 25px;
+      filter: invert(1);
+    }
+
+    .sound-btn:hover { transform: scale(1.1); }
+
     /* ✅ الصندوق المركزي */
     .box {
       text-align: center;
       color: white;
-      margin-top: -20px;
+      margin-top: 20px;
       animation: fadeUp 0.9s ease;
     }
 
@@ -62,7 +105,7 @@
 
     .title {
       font-size: 42px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-weight: bold;
       text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
@@ -106,7 +149,6 @@
       width: 30px;
       height: 30px;
     }
-
   </style>
 </head>
 
@@ -115,19 +157,24 @@
   <!-- ✅ صورة الزاوية -->
   <img src="image.jpg" class="corner-img">
 
-  <!-- ✅ الشعار -->
+  <!-- ✅ شعار الموقع في الوسط -->
   <div class="logo">RIYU SITE</div>
+
+  <!-- ✅ زر ثلاث شطّات -->
+  <div class="menu-btn" id="menuBtn">☰</div>
+
+  <!-- ✅ زر تشغيل الموسيقى -->
+  <div class="sound-btn" id="soundBtn">
+    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Music-Speaker-icon.png">
+  </div>
 
   <!-- ✅ النصوص وأزرار الدخول -->
   <div class="box">
-
     <div class="title">مرحباً بك</div>
-
     <div class="subtitle">اختر طريقة تسجيل الدخول للمتابعة</div>
 
     <div class="login-buttons">
-
-      <!-- ✅ Google Button -->
+      <!-- Google -->
       <div class="login-btn" id="google-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.5 8 2.8l5.9-5.9C34.3 3.5 29.6 1.5 24 1.5 14.8 1.5 6.8 6.7 3.1 14.5l6.9 5.3C11.8 14 17.3 9.5 24 9.5z"/>
@@ -137,7 +184,7 @@
         </svg>
       </div>
 
-      <!-- ✅ Facebook Button -->
+      <!-- Facebook -->
       <div class="login-btn" id="facebook-btn">
         <svg xmlns="http://www.w3.org/2000/svg" fill="#1877f2" viewBox="0 0 24 24">
           <path d="M22 12a10 10 0 1 0-11.5 9.9v-7H7.3v-3h3.2V9.4c0-3.2 1.9-5 4.8-5 1.4 0 2.8.2 2.8.2v3h-1.6c-1.6 0-2.1 1-2.1 2v2.4h3.6l-.6 3h-3v7A10 10 0 0 0 22 12"/>
@@ -145,12 +192,23 @@
       </div>
 
     </div>
-
   </div>
+
+  <!-- ✅ ملف الموسيقى -->
+  <audio id="musicPlayer" loop>
+    <source src="chubina.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     window.addEventListener("load", () => {
       document.body.classList.add("fade-in");
+
+      // ✅ إذا الموسيقى كانت مشتغلة من قبل — شغل مباشرة
+      if (localStorage.getItem("musicPlaying") === "true") {
+        const music = document.getElementById("musicPlayer");
+        music.volume = 0.7;
+        music.play().catch(()=>{});
+      }
     });
 
     function goTo(page) {
@@ -161,6 +219,42 @@
 
     document.getElementById("google-btn").onclick = () => goTo("google.html");
     document.getElementById("facebook-btn").onclick = () => goTo("facebook.html");
+
+    /* ✅ نظام الثلاث شطّات + مكبر الصوت */
+    const menuBtn = document.getElementById("menuBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const music = document.getElementById("musicPlayer");
+
+    let soundVisible = false;
+    let playing = false;
+
+    // ✅ ظهور / إخفاء مكبر الصوت
+    menuBtn.onclick = (e) => {
+      e.stopPropagation();
+      soundVisible = !soundVisible;
+      soundBtn.style.display = soundVisible ? "flex" : "none";
+    };
+
+    // ✅ تشغيل وإيقاف الموسيقى
+    soundBtn.onclick = (e) => {
+      e.stopPropagation();
+      playing = !playing;
+
+      if (playing) {
+        music.volume = 0.7;
+        music.play();
+        localStorage.setItem("musicPlaying", "true");
+      } else {
+        music.pause();
+        localStorage.setItem("musicPlaying", "false");
+      }
+    };
+
+    // ✅ إخفاء أيقونة مكبر الصوت عند الضغط خارجها
+    document.body.addEventListener("click", () => {
+      soundBtn.style.display = "none";
+      soundVisible = false;
+    });
   </script>
 
 </body>
