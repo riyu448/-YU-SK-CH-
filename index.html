@@ -30,19 +30,19 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 85px;
+      width: 90px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255,255,255,0.25);
     }
 
-    /* ✅ شعار RIYU في الوسط */
+    /* ✅ شعار RIYU في مستوى الصورة */
     .logo {
       position: absolute;
-      top: 25px;
+      top: 32px;
       left: 50%;
       transform: translateX(-50%);
       color: white;
-      font-size: 30px;
+      font-size: 32px;
       font-weight: bold;
       letter-spacing: 3px;
       text-shadow: 0 0 12px rgba(255,255,255,0.5);
@@ -51,7 +51,7 @@
     /* ✅ زر الثلاث شطّات */
     .menu-btn {
       position: absolute;
-      top: 25px;
+      top: 28px;
       left: 20px;
       font-size: 32px;
       color: white;
@@ -66,10 +66,10 @@
     /* ✅ زر مكبر الصوت */
     .sound-btn {
       position: absolute;
-      top: 75px;
+      top: 82px;
       left: 20px;
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: #111;
       display: none;
@@ -83,9 +83,10 @@
     }
 
     .sound-btn img {
-      width: 25px;
-      height: 25px;
+      width: 28px;
+      height: 28px;
       filter: invert(1);
+      transition: 0.2s;
     }
 
     .sound-btn:hover { transform: scale(1.1); }
@@ -94,7 +95,7 @@
     .box {
       text-align: center;
       color: white;
-      margin-top: 20px;
+      margin-top: 30px;
       animation: fadeUp 0.9s ease;
     }
 
@@ -118,7 +119,6 @@
       letter-spacing: 1px;
     }
 
-    /* ✅ الأزرار */
     .login-buttons {
       display: flex;
       justify-content: center;
@@ -157,23 +157,24 @@
   <!-- ✅ صورة الزاوية -->
   <img src="image.jpg" class="corner-img">
 
-  <!-- ✅ شعار الموقع في الوسط -->
+  <!-- ✅ شعار RIYU SITE -->
   <div class="logo">RIYU SITE</div>
 
-  <!-- ✅ زر ثلاث شطّات -->
+  <!-- ✅ زر الثلاث شطّات -->
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <!-- ✅ زر تشغيل الموسيقى -->
+  <!-- ✅ زر مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
-    <img src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
+    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ النصوص وأزرار الدخول -->
+  <!-- ✅ النصوص -->
   <div class="box">
     <div class="title">مرحباً بك</div>
     <div class="subtitle">اختر طريقة تسجيل الدخول للمتابعة</div>
 
     <div class="login-buttons">
+
       <!-- Google -->
       <div class="login-btn" id="google-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -203,11 +204,13 @@
     window.addEventListener("load", () => {
       document.body.classList.add("fade-in");
 
-      // ✅ إذا الموسيقى كانت مشتغلة من قبل — شغل مباشرة
+      // ✅ إذا الموسيقى كانت مشتغلة مسبقاً شغلها
       if (localStorage.getItem("musicPlaying") === "true") {
         const music = document.getElementById("musicPlayer");
         music.volume = 0.7;
         music.play().catch(()=>{});
+        document.getElementById("soundIcon").src =
+          "https://cdn-icons-png.flaticon.com/512/727/727269.png";
       }
     });
 
@@ -220,22 +223,23 @@
     document.getElementById("google-btn").onclick = () => goTo("google.html");
     document.getElementById("facebook-btn").onclick = () => goTo("facebook.html");
 
-    /* ✅ نظام الثلاث شطّات + مكبر الصوت */
+    /* ✅ نظام الصوت */
     const menuBtn = document.getElementById("menuBtn");
     const soundBtn = document.getElementById("soundBtn");
+    const soundIcon = document.getElementById("soundIcon");
     const music = document.getElementById("musicPlayer");
 
     let soundVisible = false;
-    let playing = false;
+    let playing = localStorage.getItem("musicPlaying") === "true";
 
-    // ✅ ظهور / إخفاء مكبر الصوت
+    // ✅ عند الضغط على ☰ يظهر زر الصوت
     menuBtn.onclick = (e) => {
       e.stopPropagation();
       soundVisible = !soundVisible;
       soundBtn.style.display = soundVisible ? "flex" : "none";
     };
 
-    // ✅ تشغيل وإيقاف الموسيقى
+    // ✅ تشغيل / إيقاف الموسيقى
     soundBtn.onclick = (e) => {
       e.stopPropagation();
       playing = !playing;
@@ -243,14 +247,16 @@
       if (playing) {
         music.volume = 0.7;
         music.play();
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png"; // 🔊
         localStorage.setItem("musicPlaying", "true");
       } else {
         music.pause();
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png"; // 🔈
         localStorage.setItem("musicPlaying", "false");
       }
     };
 
-    // ✅ إخفاء أيقونة مكبر الصوت عند الضغط خارجها
+    // ✅ الضغط خارج يخفي الأيقونة
     document.body.addEventListener("click", () => {
       soundBtn.style.display = "none";
       soundVisible = false;
@@ -258,4 +264,4 @@
   </script>
 
 </body>
-  </html>
+</html>
