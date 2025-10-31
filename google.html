@@ -58,6 +58,22 @@
       filter: invert(1);
     }
 
+    /* دائرة تحميل صغيرة عند الزر (مثل index) */
+    .mini-loader {
+      position: fixed;
+      top: 76px; /* ملاصق لمكان sound-btn */
+      left: 72px;
+      width: 30px;
+      height: 30px;
+      border: 4px solid #e0e0e0;
+      border-top: 4px solid #4285F4;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      display: none;
+      z-index: 999;
+      background: transparent;
+    }
+
     .back-circle {
       position: fixed;
       top: 18px;
@@ -93,72 +109,19 @@
       animation: fadeIn 0.7s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-      outline: none;
-      transition: 0.3s;
-    }
+    input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #ccc; font-size: 15px; outline: none; transition: 0.3s; }
+    input:focus { border-color: #4285f4; box-shadow: 0 0 5px rgba(66,133,244,0.3); }
 
-    input:focus {
-      border-color: #4285f4;
-      box-shadow: 0 0 5px rgba(66,133,244,0.3);
-    }
+    button { width: 100%; padding: 12px; background-color: #4285F4; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 16px; transition: 0.3s; }
+    button:hover { background-color: #357ae8; }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #4285F4;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-    button:hover {
-      background-color: #357ae8;
-    }
-
-    .loader-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(255,255,255,0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      flex-direction: column;
-    }
-
-    .loader {
-      border: 6px solid #e0e0e0;
-      border-top: 6px solid #4285F4;
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      margin-top: 15px;
-      color: #555;
-      font-size: 15px;
-    }
+    /* شاشة التحميل الكبيرة للفورم */
+    .loader-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
+    .loader { border: 6px solid #e0e0e0; border-top: 6px solid #4285F4; border-radius: 50%; width: 55px; height: 55px; animation: spin 1s linear infinite; }
+    .loading-text { margin-top: 15px; color: #555; font-size: 15px; }
   </style>
 </head>
 
@@ -166,12 +129,15 @@
 
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <div class="sound-btn" id="soundBtn">
-    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
+  <div class="sound-btn" id="soundBtn" aria-label="زر الصوت">
+    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png" alt="sound">
   </div>
 
-  <div class="back-circle" id="backBtn">
-    <img src="image.jpg">
+  <!-- دائرة تحميل صغيرة تظهر عند أول تشغيل للموسيقى -->
+  <div id="miniLoader" class="mini-loader" aria-hidden="true"></div>
+
+  <div class="back-circle" id="backBtn" title="رجوع">
+    <img src="image.jpg" alt="back">
   </div>
 
   <div class="google-container" id="googleBox">
@@ -195,7 +161,7 @@
 
   </div>
 
-  <div id="loaderOverlay" class="loader-overlay">
+  <div id="loaderOverlay" class="loader-overlay" aria-hidden="true">
     <div class="loader"></div>
     <div class="loading-text">جارٍ تسجيل الدخول...</div>
   </div>
@@ -205,49 +171,59 @@
   </audio>
 
   <script>
-    window.onload = () => {
-      document.body.classList.add("fade-in");
-
-      if (localStorage.getItem("musicPlaying") === "true") {
-        music.volume = 0.7;
-        music.play().catch(()=>{});
-        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
-      }
-    };
-
+    // إعداد الواجهة
     const music = document.getElementById("musicPlayer");
     const soundBtn = document.getElementById("soundBtn");
     const menuBtn = document.getElementById("menuBtn");
     const soundIcon = document.getElementById("soundIcon");
-    const loaderOverlay = document.getElementById("loaderOverlay"); /* ✅ إصلاح */
+    const loaderOverlay = document.getElementById("loaderOverlay");
+    const miniLoader = document.getElementById("miniLoader");
+    const backBtn = document.getElementById("backBtn");
 
     let soundVisible = false;
     let playing = localStorage.getItem("musicPlaying") === "true";
     let firstPlay = false;
 
+    window.onload = () => {
+      document.body.classList.add("fade-in");
+      if (playing) {
+        music.volume = 0.7;
+        music.play().catch(()=>{});
+        soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
+        firstPlay = true; // already played before
+      }
+    };
+
+    // ☰ يظهر/يخفي زر الصوت
     menuBtn.onclick = (e) => {
       e.stopPropagation();
       soundVisible = !soundVisible;
       soundBtn.style.display = soundVisible ? "flex" : "none";
     };
 
+    // سلوك الزر: يظهر mini loader عند أول تشغيل، يخفيه بعد تشغيل الصوت
     soundBtn.onclick = async (e) => {
       e.stopPropagation();
       playing = !playing;
 
       if (playing) {
+        // أول تشغيل: أظهر loader صغير بجانب الزر
         if (!firstPlay) {
-          loaderOverlay.style.display = "flex";   /* ✅ يظهر */
-          await music.play().catch(()=>{});
-          loaderOverlay.style.display = "none";   /* ✅ يختفي */
+          miniLoader.style.display = "block";
+          try {
+            await music.play();
+          } catch (err) {
+            // إذا منع المتصفح التشغيل الأوتوماتيكي، أخفِ الـminiLoader ولا تعطل الصفحة
+            console.log("play blocked:", err);
+          }
+          miniLoader.style.display = "none";
           firstPlay = true;
-
+          // أخفِ قائمة الصوت بعد التشغيل الأولي
           soundBtn.style.display = "none";
           soundVisible = false;
         } else {
-          music.play();
+          music.play().catch(()=>{});
         }
-
         soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
         localStorage.setItem("musicPlaying", "true");
       } else {
@@ -257,21 +233,22 @@
       }
     };
 
+    // الضغط خارج يخفي زر الصوت
     document.body.onclick = () => {
       soundBtn.style.display = "none";
       soundVisible = false;
     };
 
-    document.getElementById("backBtn").onclick = () => {
+    // زر الرجوع
+    backBtn.onclick = () => {
       document.body.classList.add("fade-out");
       setTimeout(() => window.location.href = "index.html", 600);
     };
 
+    // فورم تسجيل الدخول يستخدم شاشة التحميل الكبيرة كما كانت
     document.getElementById("googleForm").onsubmit = (e) => {
       e.preventDefault();
-
       loaderOverlay.style.display = "flex";
-
       setTimeout(() => {
         document.body.classList.add("fade-out");
         setTimeout(() => window.location.href = "success.html", 600);
