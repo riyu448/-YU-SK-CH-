@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نجاح تسجيل الدخول</title>
-  <style>
 
+  <style>
     body {
       display: flex;
       flex-direction: column;
@@ -113,6 +113,7 @@
       z-index: 999;
     }
 
+    /* شاشة الانتقال */
     .flash-transition {
       position: fixed;
       inset: 0;
@@ -125,6 +126,37 @@
 
     .flash-active {
       opacity: 1;
+    }
+
+    /* شاشة اللودر عند النت الضعيف للموسيقى */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999999;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #333;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: red;
+      margin-top: 12px;
+      font-size: 16px;
     }
 
   </style>
@@ -147,11 +179,16 @@
   <div class="message-box">
     <h2 style="color:red;">🚨 معلوماتك الآن عند RIYU 🚨</h2>
     <p style="color:white;">⚠ تحت_تطوير ⚠</p>
-
     <img id="clickImage" src="image.jpg">
   </div>
 
   <div class="congrats-text">🎉 تهانينا 🎉</div>
+
+  <!-- ✅ لودر النت الضعيف للموسيقى -->
+  <div id="loaderOverlay" class="loader-overlay">
+    <div class="loader"></div>
+    <div class="loading-text">جاري تشغيل الموسيقى...</div>
+  </div>
 
   <audio id="musicPlayer" loop>
     <source src="chubina.mp3">
@@ -167,9 +204,13 @@ const menuBtn = document.getElementById("menuBtn");
 const soundBtn = document.getElementById("soundBtn");
 const soundIcon = document.getElementById("soundIcon");
 const music = document.getElementById("musicPlayer");
+const loaderOverlay = document.getElementById("loaderOverlay");
+
 let soundVisible = false;
 let playing = localStorage.getItem("musicPlaying") === "true";
+let firstPlay = false;
 
+/* ✅ إذا الموسيقى كانت شغالة من قبل */
 if (playing) {
   music.volume = 0.7;
   music.play().catch(()=>{});
@@ -182,14 +223,28 @@ menuBtn.onclick = (e) => {
   soundBtn.style.display = soundVisible ? "flex" : "none";
 };
 
-soundBtn.onclick = (e) => {
+soundBtn.onclick = async (e) => {
   e.stopPropagation();
+
   playing = !playing;
 
   if (playing) {
-    music.play();
+
+    if (!firstPlay) {
+      loaderOverlay.style.display = "flex";  
+      await music.play().catch(()=>{});
+      loaderOverlay.style.display = "none";  
+      firstPlay = true;
+
+      soundBtn.style.display = "none";
+      soundVisible = false;
+    } else {
+      music.play();
+    }
+
     soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
     localStorage.setItem("musicPlaying", "true");
+
   } else {
     music.pause();
     soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
