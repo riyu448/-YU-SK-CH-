@@ -2,9 +2,10 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نجاح تسجيل الدخول</title>
   <style>
+
     body {
       display: flex;
       flex-direction: column;
@@ -17,11 +18,9 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      user-select: none;
-      touch-action: none;
     }
 
-    /* ✅ زر الثلاث شطّات */
+    /* ✅ زر ☰ */
     .menu-btn {
       position: fixed;
       top: 15px;
@@ -29,7 +28,6 @@
       font-size: 32px;
       color: white;
       cursor: pointer;
-      text-shadow: 0 0 10px rgba(255,255,255,0.4);
       z-index: 999;
       user-select: none;
     }
@@ -47,90 +45,64 @@
       justify-content: center;
       align-items: center;
       border: 1px solid #333;
-      box-shadow: 0 0 10px rgba(255,255,255,0.25);
       cursor: pointer;
       z-index: 999;
     }
-
     .sound-btn img {
-      width: 25px;
-      height: 25px;
+      width: 26px;
+      height: 26px;
       filter: invert(1);
     }
 
+    /* ✅ كتابة النجاح */
     .success-text {
       color: #fff;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-size: 40px;
       font-weight: bold;
-      text-shadow: 0 0 15px #ff0000, 0 0 25px #ff0000;
-      margin-top: 10vh;
-      letter-spacing: 1px;
-      animation: flicker 1.2s infinite alternate;
+      margin-top: 11vh;
+      text-shadow: 0 0 20px red;
+      animation: glow 1.3s infinite alternate;
     }
 
-    @keyframes flicker {
-      0% { opacity: 1; text-shadow: 0 0 10px #ff0000, 0 0 25px #ff0000; }
-      100% { opacity: 0.8; text-shadow: 0 0 3px #ff0000; }
+    @keyframes glow {
+      0% { text-shadow: 0 0 20px red; }
+      100% { text-shadow: 0 0 5px red; }
     }
 
+    /* ✅ صندوق الرسالة */
     .message-box {
       background: rgba(255, 0, 0, 0.15);
-      border: 4px solid #ff0000;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 0, 0.6);
-      backdrop-filter: blur(12px);
+      border: 3px solid red;
+      padding: 20px;
+      border-radius: 18px;
       width: 85%;
-      max-width: 460px;
-      animation: pulse 2s infinite alternate ease-in-out;
+      max-width: 450px;
+      box-shadow: 0 0 40px red;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 25px rgba(255,0,0,0.8), inset 0 0 10px rgba(255,0,0,0.5); }
-      100% { box-shadow: 0 0 50px rgba(255,0,0,1), inset 0 0 25px rgba(255,0,0,0.8); }
-    }
-
-    h2 {
-      color: #ff0000;
-      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-      margin-bottom: 10px;
-      text-shadow: 0 0 10px #ff0000;
-    }
-
-    h2 .small-text {
-      font-size: 0.9em;
-      font-weight: bold;
-      color: #ff0000;
-    }
-
-    p {
-      color: white;
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      margin: 0;
-      text-shadow: 0 0 8px #ff0000;
-    }
-
-    img {
+    .message-box img {
       width: 180px;
-      margin-top: 15px;
       border-radius: 10px;
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+      margin-top: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 25px red;
+    }
+
+    .message-box img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px red;
     }
 
     .congrats-text {
       color: yellow;
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-size: 28px;
       font-weight: bold;
-      text-shadow: 0 0 15px yellow, 0 0 25px yellow;
       margin-bottom: 12vh;
-      animation: glow 1.5s infinite alternate;
+      text-shadow: 0 0 20px yellow;
     }
 
-    @keyframes glow {
-      0% { opacity: 1; text-shadow: 0 0 15px yellow; }
-      100% { opacity: 0.8; text-shadow: 0 0 5px yellow; }
-    }
-
+    /* ✅ زر تسجيل الخروج */
     button {
       position: fixed;
       top: 15px;
@@ -140,88 +112,121 @@
       border: none;
       padding: 10px 16px;
       border-radius: 8px;
-      font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      transition: background-color 0.3s;
+      font-weight: bold;
       z-index: 999;
     }
 
-    button:hover {
-      background-color: #0e5ad6;
+    /* ✅ شاشة تأثير الانتقال القوي */
+    .flash-transition {
+      position: fixed;
+      inset: 0;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999999;
+      transition: opacity 0.4s ease;
     }
+
+    .flash-active {
+      opacity: 1;
+    }
+
   </style>
 </head>
+
 <body>
 
-  <!-- ✅ زر الثلاث شطّات -->
+  <!-- ✅ فلاش الانتقال -->
+  <div id="flash" class="flash-transition"></div>
+
+  <!-- ✅ زر ☰ -->
   <div class="menu-btn" id="menuBtn">☰</div>
 
-  <!-- ✅ زر تشغيل الموسيقى -->
+  <!-- ✅ مكبر الصوت -->
   <div class="sound-btn" id="soundBtn">
-    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Music-Speaker-icon.png">
+    <img id="soundIcon" src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
   </div>
 
-  <!-- ✅ زر تسجيل الخروج -->
+  <!-- ✅ تسجيل الخروج -->
   <button onclick="logout()">تسجيل الخروج</button>
 
   <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
 
   <div class="message-box">
-    <h2>🚨 <span class="small-text">RIYU</span> معلوماتك الآن عند 🚨</h2>
-    <p>⚠ تحت_تطوير ⚠</p>
-    <img src="image.jpg" alt="تحت_تطوير">
+    <h2 style="color:red;">🚨 معلوماتك الآن عند RIYU 🚨</h2>
+    <p style="color:white;">⚠ تحت_تطوير ⚠</p>
+
+    <!-- ✅ الصورة القابلة للنقر -->
+    <img id="clickImage" src="image.jpg">
   </div>
 
-  <div class="congrats-text">🎉 تاهنينا، اختراقك 🎉</div>
+  <div class="congrats-text">🎉 تهانينا 🎉</div>
 
-  <!-- ✅ ملف الموسيقى -->
+  <!-- ✅ الموسيقى -->
   <audio id="musicPlayer" loop>
-    <source src="chubina.mp3" type="audio/mpeg">
+    <source src="chubina.mp3">
   </audio>
 
-  <script>
-    function logout() {
-      localStorage.removeItem('currentUser');
-      window.location.href = 'index.html';
-    }
+<script>
+/* ✅ تسجيل الخروج */
+function logout() {
+  window.location.href = "index.html";
+}
 
-    const menuBtn = document.getElementById("menuBtn");
-    const soundBtn = document.getElementById("soundBtn");
-    const music = document.getElementById("musicPlayer");
+/* ✅ مكبر الصوت + حفظ حالته */
+const menuBtn = document.getElementById("menuBtn");
+const soundBtn = document.getElementById("soundBtn");
+const soundIcon = document.getElementById("soundIcon");
+const music = document.getElementById("musicPlayer");
+let soundVisible = false;
+let playing = localStorage.getItem("musicPlaying") === "true";
 
-    let soundVisible = false;
-    let playing = localStorage.getItem("musicPlaying") === "true";
+if (playing) {
+  music.volume = 0.7;
+  music.play().catch(()=>{});
+  soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
+}
 
-    if (playing) {
-      music.volume = 0.7;
-      music.play().catch(()=>{});
-    }
+menuBtn.onclick = (e) => {
+  e.stopPropagation();
+  soundVisible = !soundVisible;
+  soundBtn.style.display = soundVisible ? "flex" : "none";
+};
 
-    menuBtn.onclick = (e) => {
-      e.stopPropagation();
-      soundVisible = !soundVisible;
-      soundBtn.style.display = soundVisible ? "flex" : "none";
-    };
+soundBtn.onclick = (e) => {
+  e.stopPropagation();
+  playing = !playing;
 
-    soundBtn.onclick = (e) => {
-      e.stopPropagation();
-      playing = !playing;
+  if (playing) {
+    music.play();
+    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
+    localStorage.setItem("musicPlaying", "true");
+  } else {
+    music.pause();
+    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
+    localStorage.setItem("musicPlaying", "false");
+  }
+};
 
-      if (playing) {
-        music.play();
-        localStorage.setItem("musicPlaying", "true");
-      } else {
-        music.pause();
-        localStorage.setItem("musicPlaying", "false");
-      }
-    };
+document.body.onclick = () => {
+  soundBtn.style.display = "none";
+  soundVisible = false;
+};
 
-    document.body.onclick = () => {
-      soundBtn.style.display = "none";
-      soundVisible = false;
-    };
-  </script>
+/* ✅ تأثير الانتقال القوي عند الضغط على الصورة */
+const flash = document.getElementById("flash");
+const img = document.getElementById("clickImage");
+
+img.onclick = () => {
+  flash.classList.add("flash-active");
+
+  setTimeout(() => {
+    window.location.href = "finally.html";
+  }, 450);
+};
+
+</script>
 
 </body>
-    </html>
+</html>
