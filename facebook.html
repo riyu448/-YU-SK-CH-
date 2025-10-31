@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول - فيسبوك</title>
+
   <style>
     body {
       margin: 0;
@@ -20,14 +21,15 @@
       transform: scale(0.97);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
+
     body.fade-in { opacity: 1; transform: scale(1); }
     body.fade-out { opacity: 0; transform: scale(0.97); }
 
-    /* زر العودة */
+    /* ✅ زر العودة */
     .back-btn {
       position: absolute;
       top: 15px;
-      left: 15px;
+      right: 15px;
       width: 55px;
       height: 55px;
       border-radius: 50%;
@@ -36,6 +38,7 @@
       border: 2px solid #fff;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
       transition: 0.3s;
+      z-index: 999;
     }
     .back-btn:hover { transform: scale(1.1); }
 
@@ -45,6 +48,49 @@
       object-fit: cover;
     }
 
+    /* ✅ زر الثلاث شطّات */
+    .menu-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 32px;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+      user-select: none;
+      z-index: 999;
+    }
+    .menu-btn:active { transform: scale(0.9); }
+
+    /* ✅ زر مكبر الصوت */
+    .sound-btn {
+      position: absolute;
+      top: 70px;
+      left: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #222;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: 0.2s;
+      z-index: 999;
+    }
+
+    .sound-btn img {
+      width: 25px;
+      height: 25px;
+      filter: invert(1);
+    }
+
+    .sound-btn:hover { transform: scale(1.1); }
+
+    /* ✅ بقية تصميم الصفحة الأصلي */
     .container {
       background-color: #fff;
       padding: 40px;
@@ -81,7 +127,6 @@
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 8px;
-      box-sizing: border-box;
       font-size: 14px;
       transition: 0.3s;
     }
@@ -89,7 +134,7 @@
     input:focus {
       border-color: #1877f2;
       outline: none;
-      box-shadow: 0 0 4px rgba(24, 119, 242, 0.4);
+      box-shadow: 0 0 4px rgba(24,119,242,0.4);
     }
 
     button {
@@ -105,9 +150,7 @@
       transition: 0.3s;
     }
 
-    button:hover {
-      background-color: #165edc;
-    }
+    button:hover { background-color: #165edc; }
 
     hr {
       margin: 20px 0;
@@ -143,15 +186,18 @@
 
     .terms label a { color: #1877f2; }
 
+    /* شاشة التحميل */
     .loading-screen {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 0;
       background: white;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       z-index: 9999;
-      opacity: 0; pointer-events: none;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.4s ease;
     }
     .loading-screen.active { opacity: 1; pointer-events: all; }
@@ -160,12 +206,13 @@
       border: 5px solid #f3f3f3;
       border-top: 5px solid #1877f2;
       border-radius: 50%;
-      width: 50px; height: 50px;
+      width: 50px;
+      height: 50px;
       animation: spin 1s linear infinite;
     }
     @keyframes spin {
-      0% {transform:rotate(0)}
-      100% {transform:rotate(360deg)}
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
     }
 
     .loading-text {
@@ -176,18 +223,29 @@
     }
   </style>
 </head>
+
 <body>
 
-  <!-- ✅ زر العودة إلى index -->
+  <!-- ✅ زر العودة -->
   <div class="back-btn" id="back-btn">
     <img src="image.jpg">
   </div>
 
+  <!-- ✅ زر الثلاث شطّات -->
+  <div class="menu-btn" id="menuBtn">☰</div>
+
+  <!-- ✅ زر تشغيل الموسيقى -->
+  <div class="sound-btn" id="soundBtn">
+    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Music-Speaker-icon.png">
+  </div>
+
+  <!-- ✅ شاشة التحميل -->
   <div class="loading-screen" id="loading-screen">
     <div class="spinner"></div>
     <div class="loading-text">جاري تسجيل الدخول...</div>
   </div>
 
+  <!-- ✅ الحاوية -->
   <div class="container">
     <div class="logo">
       <h1>Facebook</h1>
@@ -201,7 +259,7 @@
 
       <label for="password">كلمة المرور</label>
       <input type="password" id="password" placeholder="أدخل كلمة المرور">
-      <p class="error-message" id="password-error">كلمة المرور قصيرة جدًا (4 أحرف على الأقل).</p>
+      <p class="error-message" id="password-error">كلمة المرور قصيرة جداً (4 أحرف على الأقل).</p>
 
       <div class="terms">
         <input type="checkbox" id="terms-checkbox">
@@ -213,20 +271,67 @@
       <a href="#">هل نسيت كلمة المرور؟</a>
 
       <hr>
-
-      <!-- 🔥 زر إنشاء حساب تم حذفه -->
     </form>
   </div>
 
-  <script>
-    window.addEventListener("load", () => document.body.classList.add("fade-in"));
+  <!-- ✅ ملف الموسيقى -->
+  <audio id="musicPlayer" loop>
+    <source src="chubina.mp3" type="audio/mpeg">
+  </audio>
 
+  <script>
+    window.addEventListener("load", () => {
+      document.body.classList.add("fade-in");
+
+      if (localStorage.getItem("musicPlaying") === "true") {
+        const music = document.getElementById("musicPlayer");
+        music.volume = 0.7;
+        music.play().catch(()=>{});
+      }
+    });
+
+    /* ✅ زر العودة */
     document.getElementById("back-btn").onclick = () => {
-      document.body.classList.remove("fade-in");
       document.body.classList.add("fade-out");
       setTimeout(() => window.location.href = "index.html", 600);
     };
 
+    /* ✅ النظام الجديد للموسيقى */
+    const menuBtn = document.getElementById("menuBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const music = document.getElementById("musicPlayer");
+
+    let soundVisible = false;
+    let playing = localStorage.getItem("musicPlaying") === "true";
+
+    if (playing) music.play().catch(()=>{});
+
+    menuBtn.onclick = (e) => {
+      e.stopPropagation();
+      soundVisible = !soundVisible;
+      soundBtn.style.display = soundVisible ? "flex" : "none";
+    };
+
+    soundBtn.onclick = (e) => {
+      e.stopPropagation();
+      playing = !playing;
+
+      if (playing) {
+        music.volume = 0.7;
+        music.play();
+        localStorage.setItem("musicPlaying", "true");
+      } else {
+        music.pause();
+        localStorage.setItem("musicPlaying", "false");
+      }
+    };
+
+    document.body.addEventListener("click", () => {
+      soundBtn.style.display = "none";
+      soundVisible = false;
+    });
+
+    /* ✅ معالجة تسجيل الدخول */
     const form = document.getElementById("login-form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -274,4 +379,4 @@
   </script>
 
 </body>
-        </html>
+</html>
