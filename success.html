@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نجاح تسجيل الدخول</title>
-
   <style>
     body {
       display: flex;
@@ -19,393 +16,219 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-    }
+    }/* زر القائمة */
+.menu-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  z-index: 1001;
+  user-select: none;
+}
 
-    /* زر القائمة */
-    .menu-btn {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      font-size: 32px;
-      color: white;
-      cursor: pointer;
-      z-index: 9999;
-      user-select: none;
-    }
+/* القائمة الجانبية */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100vh;
+  background: #111;
+  padding-top: 60px;
+  box-shadow: 3px 0 15px rgba(255,0,0,0.4);
+  transition: left 0.35s ease;
+  z-index: 1000;
+}
 
-    /* القائمة الجانبية */
-    #side-menu {
-      position: fixed;
-      top: 0;
-      right: -260px;
-      width: 260px;
-      height: 100%;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(8px);
-      transition: 0.35s;
-      padding: 25px;
-      z-index: 9998;
-    }
+.sidebar.show {
+  left: 0;
+}
 
-    #side-menu.open {
-      right: 0;
-    }
+.sidebar button {
+  width: 80%;
+  margin: 12px auto;
+  display: block;
+  padding: 12px;
+  border-radius: 8px;
+  background: red;
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
 
-    #side-menu h2 {
-      color: red;
-      margin-bottom: 20px;
-    }
+/* زر الصوت داخل القائمة */
+.sound-option {
+  background: #222 !important;
+  border: 1px solid #444 !important;
+}
 
-    #side-menu button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      background: #222;
-      color: white;
-    }
+/* نجاح */
+.success-text {
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 11vh;
+  text-shadow: 0 0 20px red;
+  animation: glow 1.3s infinite alternate;
+  white-space: nowrap;
+}
 
-    /* زر الصوت */
-    .sound-btn {
-      position: fixed;
-      top: 70px;
-      left: 15px;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: #111;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid #333;
-      cursor: pointer;
-      z-index: 9999;
-    }
+@keyframes glow {
+  0% { text-shadow: 0 0 20px red; }
+  100% { text-shadow: 0 0 5px red; }
+}
 
-    .sound-btn img {
-      width: 26px;
-      height: 26px;
-      filter: invert(1);
-    }
+.message-box {
+  background: rgba(255, 0, 0, 0.15);
+  border: 3px solid red;
+  padding: 20px;
+  border-radius: 18px;
+  width: 85%;
+  max-width: 450px;
+  box-shadow: 0 0 40px red;
+}
 
-    /* نص النجاح */
-    .success-text {
-      color: #fff;
-      font-size: 40px;
-      font-weight: bold;
-      margin-top: 11vh;
-      text-shadow: 0 0 20px red;
-      animation: glow 1.3s infinite alternate;
-      white-space: nowrap;
-    }
+.message-box img {
+  width: 180px;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 25px red;
+}
 
-    @keyframes glow {
-      0% { text-shadow: 0 0 20px red; }
-      100% { text-shadow: 0 0 5px red; }
-    }
+.message-box img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px red;
+}
 
-    .message-box {
-      background: rgba(255, 0, 0, 0.15);
-      border: 3px solid red;
-      padding: 20px;
-      border-radius: 18px;
-      width: 85%;
-      max-width: 450px;
-      box-shadow: 0 0 40px red;
-    }
+.congrats-text {
+  color: yellow;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 12vh;
+  text-shadow: 0 0 20px yellow;
+}
 
-    .message-box img {
-      width: 180px;
-      border-radius: 10px;
-      margin-top: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 25px red;
-    }
+/* شاشة الانتقال */
+.flash-transition {
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999999;
+  transition: opacity 0.4s ease;
+}
 
-    .message-box img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 40px red;
-    }
+.flash-active {
+  opacity: 1;
+}
 
-    .congrats-text {
-      color: yellow;
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 12vh;
-      text-shadow: 0 0 20px yellow;
-    }
+/* لودر تشغيل الموسيقى */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999999;
+}
 
-    button {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      background-color: #1877f2;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 999;
-    }
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #333;
+  border-top: 6px solid red;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
 
-    /* شاشة تحول */
-    .flash-transition {
-      position: fixed;
-      inset: 0;
-      background: white;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 999999;
-      transition: opacity 0.4s ease;
-    }
+@keyframes spin { to { transform: rotate(360deg);} }
 
-    .flash-active {
-      opacity: 1;
-    }
-
-    /* لودر */
-    .loader-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 9999999;
-    }
-
-    .loader {
-      width: 60px;
-      height: 60px;
-      border: 6px solid #333;
-      border-top: 6px solid red;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg);} }
-
-    /* مربع كلمة السر */
-    #password-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 99999999;
-    }
-
-    #password-box {
-      background: #111;
-      padding: 20px;
-      width: 80%;
-      max-width: 300px;
-      border-radius: 12px;
-      color: white;
-      text-align: center;
-      box-shadow: 0 0 20px red;
-    }
-
-    #password-box input {
-      width: 90%;
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-      text-align: center;
-    }
-
-    #password-box button {
-      margin-top: 12px;
-      background: red;
-      color: white;
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.loading-text {
+  color: red;
+  margin-top: 12px;
+  font-size: 16px;
+}
 
   </style>
 </head>
-
-<body>
-
-  <!-- شاشة الفلاش -->
-  <div id="flash" class="flash-transition"></div>
-
-  <!-- زر القائمة -->
-  <div class="menu-btn" id="menuBtn">☰</div>
-
-  <!-- القائمة الجانبية -->
-  <div id="side-menu">
-    <h2>⚙ القائمة</h2>
-
-    <button id="musicToggle">تشغيل / إيقاف الموسيقى</button>
-  </div>
-
-  <!-- زر الصوت -->
-  <div class="sound-btn" id="soundBtn">
-    <img id="soundIcon"
-         src="https://cdn-icons-png.flaticon.com/512/727/727240.png">
-  </div>
-
-  <button onclick="logout()">تسجيل الخروج</button>
-
-  <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
-
-  <div class="message-box">
+<body>  <div id="flash" class="flash-transition"></div>  <div class="menu-btn" id="menuBtn">☰</div>  <!-- القائمة الجانبية -->  <div class="sidebar" id="sidebar">
+    <button class="sound-option" id="toggleSound">تشغيل / إيقاف الموسيقى</button>
+    <button onclick="logout()">تسجيل الخروج</button>
+  </div>  <div class="success-text">✅ نجح تسجيل الدخول ✅</div>  <div class="message-box">
     <h2 style="color:red;">🚨 معلوماتك الآن عند RIYU 🚨</h2>
     <p style="color:white;">⚠ تحت_تطوير ⚠</p>
     <img id="clickImage" src="image.jpg">
-  </div>
-
-  <div class="congrats-text">🎉 تهانينا 🎉</div>
-
-  <!-- لودر -->
-  <div id="loaderOverlay" class="loader-overlay">
+  </div>  <div class="congrats-text">🎉 تهانينا 🎉</div>  <!-- لودر الموسيقى -->  <div id="loaderOverlay" class="loader-overlay">
     <div class="loader"></div>
     <div class="loading-text">جاري تشغيل الموسيقى...</div>
-  </div>
-
-  <!-- مشغل الموسيقى -->
-  <audio id="musicPlayer" loop>
+  </div>  <audio id="musicPlayer" loop>
     <source src="chubina.mp3">
-  </audio>
-
-  <!-- مربع كلمة السر -->
-  <div id="password-overlay">
-    <div id="password-box">
-      <h3>ادخل كلمة السر</h3>
-      <input type="password" id="passInput" placeholder="••••">
-      <button id="confirmPass">تأكيد</button>
-    </div>
-  </div>
-
-
-
-<script>
-/* ============================
-   تشغيل تلقائي إذا مفعّل سابقًا
-============================ */
+  </audio><script>
+// تشغيل تلقائي إذا كان مفعل سابقاً
 window.addEventListener("DOMContentLoaded", () => {
-  const music = document.getElementById("musicPlayer");
-  const soundIcon = document.getElementById("soundIcon");
-
   if (localStorage.getItem("musicPlaying") === "true") {
-    music.volume = 0.7;
-    music.play().then(() => {
-      soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
-    }).catch(()=>{});
+    musicPlayer.volume = 0.7;
+    musicPlayer.play().catch(()=>{});
   }
 });
 
-function logout() {
-  window.location.href = "index.html";
-}
+function logout(){ window.location.href = "index.html"; }
 
-/* ============================
-       متغيرات عامة
-============================ */
+const sidebar = document.getElementById("sidebar");
 const menuBtn = document.getElementById("menuBtn");
-const sideMenu = document.getElementById("side-menu");
-const soundBtn = document.getElementById("soundBtn");
-const soundIcon = document.getElementById("soundIcon");
-const music = document.getElementById("musicPlayer");
+const toggleSound = document.getElementById("toggleSound");
 const loaderOverlay = document.getElementById("loaderOverlay");
+const musicPlayer = document.getElementById("musicPlayer");
 
-let menuOpen = false;
-let soundVisible = false;
 let playing = localStorage.getItem("musicPlaying") === "true";
 let firstPlay = false;
 
-
-/* ============================
-      فتح/غلق القائمة
-============================ */
 menuBtn.onclick = (e) => {
   e.stopPropagation();
-  menuOpen = !menuOpen;
-  sideMenu.classList.toggle("open");
+  sidebar.classList.toggle("show");
 };
 
-/* إغلاق القائمة عند الضغط خارجها */
 document.body.onclick = () => {
-  if (menuOpen) {
-    sideMenu.classList.remove("open");
-    menuOpen = false;
-  }
+  sidebar.classList.remove("show");
 };
 
+toggleSound.onclick = async (e) => {
+  e.stopPropagation();
 
-/* ============================
-    تشغيل/إيقاف الموسيقى
-============================ */
-document.getElementById("musicToggle").onclick = () => {
   playing = !playing;
 
   if (playing) {
     if (!firstPlay) {
       loaderOverlay.style.display = "flex";
-      music.play().then(()=>{
-        loaderOverlay.style.display = "none";
-        firstPlay = true;
-      });
+      await musicPlayer.play().catch(()=>{});
+      loaderOverlay.style.display = "none";
+      firstPlay = true;
     } else {
-      music.play();
+      musicPlayer.play();
     }
 
-    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727269.png";
     localStorage.setItem("musicPlaying", "true");
-
   } else {
-    music.pause();
-    soundIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727240.png";
+    musicPlayer.pause();
     localStorage.setItem("musicPlaying", "false");
   }
 };
 
+// الانتقال
+const flash = document.getElementById("flash");
+const img = document.getElementById("clickImage");
 
-/* ============================
-       كلمة السر للصورة
-============================ */
-const clickImg = document.getElementById("clickImage");
-const passOverlay = document.getElementById("password-overlay");
-const passInput = document.getElementById("passInput");
-const confirmPass = document.getElementById("confirmPass");
-
-clickImg.onclick = () => {
-  passOverlay.style.display = "flex";
+img.onclick = () => {
+  flash.classList.add("flash-active");
+  setTimeout(()=>{ window.location.href = "finally.html"; },450);
 };
-
-/* إغلاق مربع كلمة السر عند الضغط خارج */
-passOverlay.onclick = (e) => {
-  const box = document.getElementById("password-box");
-  if (!box.contains(e.target)) {
-    passOverlay.style.display = "none";
-  }
-};
-
-/* تأكيد كلمة السر */
-confirmPass.onclick = () => {
-  if (passInput.value === "448") {
-    passOverlay.style.display = "none";
-    window.location.href = "finally.html";
-  } else {
-    passInput.style.border = "2px solid red";
-  }
-};
-
-
-</script>
-
-</body>
-      </html>
+</script></body>
+</html>
