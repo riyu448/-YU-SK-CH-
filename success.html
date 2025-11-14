@@ -1,8 +1,10 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نجاح تسجيل الدخول</title>
+
   <style>
     body {
       display: flex;
@@ -16,163 +18,234 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-    }/* زر القائمة */
-.menu-btn {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  font-size: 32px;
-  color: white;
-  cursor: pointer;
-  z-index: 1001;
-  user-select: none;
-}
+    }
 
-/* القائمة الجانبية */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 260px;
-  height: 100vh;
-  background: #111;
-  padding-top: 60px;
-  box-shadow: 3px 0 15px rgba(255,0,0,0.4);
-  transition: left 0.35s ease;
-  z-index: 1000;
-}
+    /* زر القائمة */
+    .menu-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 32px;
+      color: white;
+      cursor: pointer;
+      z-index: 1001;
+      user-select: none;
+    }
 
-.sidebar.show {
-  left: 0;
-}
+    /* القائمة الجانبية */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100vh;
+      background: #111;
+      padding-top: 60px;
+      box-shadow: 3px 0 15px rgba(255,0,0,0.4);
+      transition: left 0.35s ease;
+      z-index: 1000;
+    }
 
-.sidebar button {
-  width: 80%;
-  margin: 12px auto;
-  display: block;
-  padding: 12px;
-  border-radius: 8px;
-  background: red;
-  color: white;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
+    .sidebar.show {
+      left: 0;
+    }
 
-/* زر الصوت داخل القائمة */
-.sound-option {
-  background: #222 !important;
-  border: 1px solid #444 !important;
-}
+    .sidebar button {
+      width: 80%;
+      margin: 12px auto;
+      display: block;
+      padding: 12px;
+      border-radius: 8px;
+      background: red;
+      color: white;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
 
-/* نجاح */
-.success-text {
-  color: #fff;
-  font-size: 40px;
-  font-weight: bold;
-  margin-top: 11vh;
-  text-shadow: 0 0 20px red;
-  animation: glow 1.3s infinite alternate;
-  white-space: nowrap;
-}
+    .sound-option {
+      background: #222 !important;
+      border: 1px solid #444 !important;
+    }
 
-@keyframes glow {
-  0% { text-shadow: 0 0 20px red; }
-  100% { text-shadow: 0 0 5px red; }
-}
+    /* نص النجاح */
+    .success-text {
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      margin-top: 11vh;
+      text-shadow: 0 0 20px red;
+      animation: glow 1.3s infinite alternate;
+      white-space: nowrap;
+    }
 
-.message-box {
-  background: rgba(255, 0, 0, 0.15);
-  border: 3px solid red;
-  padding: 20px;
-  border-radius: 18px;
-  width: 85%;
-  max-width: 450px;
-  box-shadow: 0 0 40px red;
-}
+    @keyframes glow {
+      0% { text-shadow: 0 0 20px red; }
+      100% { text-shadow: 0 0 5px red; }
+    }
 
-.message-box img {
-  width: 180px;
-  border-radius: 10px;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 0 25px red;
-}
+    .message-box {
+      background: rgba(255, 0, 0, 0.15);
+      border: 3px solid red;
+      padding: 20px;
+      border-radius: 18px;
+      width: 85%;
+      max-width: 450px;
+      box-shadow: 0 0 40px red;
+    }
 
-.message-box img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 40px red;
-}
+    .message-box img {
+      width: 180px;
+      border-radius: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 25px red;
+    }
 
-.congrats-text {
-  color: yellow;
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 12vh;
-  text-shadow: 0 0 20px yellow;
-}
+    .message-box img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px red;
+    }
 
-/* شاشة الانتقال */
-.flash-transition {
-  position: fixed;
-  inset: 0;
-  background: white;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 999999;
-  transition: opacity 0.4s ease;
-}
+    .congrats-text {
+      color: yellow;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 12vh;
+      text-shadow: 0 0 20px yellow;
+    }
 
-.flash-active {
-  opacity: 1;
-}
+    /* شاشة الانتقال */
+    .flash-transition {
+      position: fixed;
+      inset: 0;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999999;
+      transition: opacity 0.4s ease;
+    }
 
-/* لودر تشغيل الموسيقى */
-.loader-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 9999999;
-}
+    .flash-active { opacity: 1; }
 
-.loader {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #333;
-  border-top: 6px solid red;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
+    /* لودر تشغيل الموسيقى */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999999;
+    }
 
-@keyframes spin { to { transform: rotate(360deg);} }
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #333;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
 
-.loading-text {
-  color: red;
-  margin-top: 12px;
-  font-size: 16px;
-}
+    @keyframes spin { to { transform: rotate(360deg);} }
+
+    .loading-text {
+      color: red;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+
+    /* مربع كلمة السر */
+    #password-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999999;
+    }
+
+    #password-box {
+      background: #111;
+      padding: 20px;
+      width: 80%;
+      max-width: 300px;
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 0 20px red;
+    }
+
+    #password-box input {
+      width: 90%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      text-align: center;
+    }
+
+    #password-box button {
+      margin-top: 12px;
+      background: red;
+      color: white;
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
   </style>
 </head>
-<body>  <div id="flash" class="flash-transition"></div>  <div class="menu-btn" id="menuBtn">☰</div>  <!-- القائمة الجانبية -->  <div class="sidebar" id="sidebar">
+
+<body>
+
+  <div id="flash" class="flash-transition"></div>
+
+  <div class="menu-btn" id="menuBtn">☰</div>
+
+  <div class="sidebar" id="sidebar">
     <button class="sound-option" id="toggleSound">تشغيل / إيقاف الموسيقى</button>
     <button onclick="logout()">تسجيل الخروج</button>
-  </div>  <div class="success-text">✅ نجح تسجيل الدخول ✅</div>  <div class="message-box">
+  </div>
+
+  <div class="success-text">✅ نجح تسجيل الدخول ✅</div>
+
+  <div class="message-box">
     <h2 style="color:red;">🚨 معلوماتك الآن عند RIYU 🚨</h2>
     <p style="color:white;">⚠ تحت_تطوير ⚠</p>
     <img id="clickImage" src="image.jpg">
-  </div>  <div class="congrats-text">🎉 تهانينا 🎉</div>  <!-- لودر الموسيقى -->  <div id="loaderOverlay" class="loader-overlay">
+  </div>
+
+  <div class="congrats-text">🎉 تهانينا 🎉</div>
+
+  <!-- لودر -->
+  <div id="loaderOverlay" class="loader-overlay">
     <div class="loader"></div>
     <div class="loading-text">جاري تشغيل الموسيقى...</div>
-  </div>  <audio id="musicPlayer" loop>
+  </div>
+
+  <audio id="musicPlayer" loop>
     <source src="chubina.mp3">
-  </audio><script>
-// تشغيل تلقائي إذا كان مفعل سابقاً
+  </audio>
+
+  <!-- مربع كلمة السر -->
+  <div id="password-overlay">
+    <div id="password-box">
+      <h3>ادخل كلمة السر</h3>
+      <input type="password" id="passInput" placeholder="••••">
+      <button id="confirmPass">تأكيد</button>
+    </div>
+  </div>
+
+<script>
+/* تشغيل تلقائي */
 window.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("musicPlaying") === "true") {
     musicPlayer.volume = 0.7;
@@ -187,10 +260,12 @@ const menuBtn = document.getElementById("menuBtn");
 const toggleSound = document.getElementById("toggleSound");
 const loaderOverlay = document.getElementById("loaderOverlay");
 const musicPlayer = document.getElementById("musicPlayer");
+const flash = document.getElementById("flash");
 
 let playing = localStorage.getItem("musicPlaying") === "true";
 let firstPlay = false;
 
+/* القائمة */
 menuBtn.onclick = (e) => {
   e.stopPropagation();
   sidebar.classList.toggle("show");
@@ -200,6 +275,7 @@ document.body.onclick = () => {
   sidebar.classList.remove("show");
 };
 
+/* الصوت */
 toggleSound.onclick = async (e) => {
   e.stopPropagation();
 
@@ -222,13 +298,41 @@ toggleSound.onclick = async (e) => {
   }
 };
 
-// الانتقال
-const flash = document.getElementById("flash");
-const img = document.getElementById("clickImage");
+/* مربع كلمة السر */
+const clickImg = document.getElementById("clickImage");
+const passOverlay = document.getElementById("password-overlay");
+const passInput = document.getElementById("passInput");
+const confirmPass = document.getElementById("confirmPass");
 
-img.onclick = () => {
-  flash.classList.add("flash-active");
-  setTimeout(()=>{ window.location.href = "finally.html"; },450);
+clickImg.onclick = () => {
+  passOverlay.style.display = "flex";
 };
-</script></body>
+
+/* إغلاق عند الضغط خارج */
+passOverlay.onclick = (e) => {
+  const box = document.getElementById("password-box");
+  if (!box.contains(e.target)) {
+    passOverlay.style.display = "none";
+  }
+};
+
+/* تحقق كلمة السر */
+confirmPass.onclick = () => {
+  if (passInput.value === "448") {
+    passOverlay.style.display = "none";
+
+    flash.classList.add("flash-active");
+
+    setTimeout(()=>{ 
+      window.location.href = "finally.html"; 
+    },450);
+
+  } else {
+    passInput.style.border = "2px solid red";
+  }
+};
+
+</script>
+
+</body>
 </html>
